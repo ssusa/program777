@@ -1,14 +1,80 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Program777</title>
-    <%= csrf_meta_tags %>
-
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
-
-  <body>
-    <%= yield %>
-  </body>
+<head>
+  <link rel="stylesheet" href="https://fastcdn.org/Lightbox/2.8.1/css/lightbox.css">
+  <title><%= @page_title %></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8" />
+  <% if !(params[:render_mode].present? && params[:render_mode] == "pc") %>
+      <!--SP,PC-->
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+  <% else %>
+      <!--PC版で見る-->
+      <meta name="viewport" content="width=1024">
+  <% end %>
+  <meta name="description" content="<%= @description %>">
+  <meta name="keywords" content="<%= @keyword %>">
+  <%= csrf_meta_tags %>
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+  <%= javascript_include_tag 'application' %>
+</head>
+<body>
+<header id="header" style="background-color: #333;color:#fff">
+  <div class="container">
+    <h1 id="title" style="font-size:24pt;margin:0;padding:10px 0;font-family: 'Press Start 2P'">
+      <%= @const_site_title %>
+    </h1>
+  </div>
+</header>
+<main id="main" style="clear: both">
+  <% if @render_mode == "sp" && !(params[:render_mode].present? && params[:render_mode] == "pc") %>
+      <!--SP-->
+      <div class="container">
+        <div style="padding:10px 5px;">
+          <%= yield %>
+        </div>
+        <div style="padding:10px 5px;">
+          <%= render "layouts/sidemenu" %>
+        </div>
+      </div>
+  <% else %>
+      <!--PC-->
+      <!--PC版で見る-->
+      <div class="container">
+        <div style="float:left;width:70%;padding:10px 5px;">
+          <%= yield %>
+        </div>
+        <div style="float:left;width:30%;padding:10px 5px;">
+          <%= render "layouts/sidemenu" %>
+        </div>
+      </div>
+  <% end %>
+</main>
+<footer id="footer" class="container" style="clear: both">
+  <div style="margin:10px 0;text-align: center;border-top: 1px #999999 solid;">
+    <div style="margin:10px 0;text-align: center;">
+      <a href="/">トップページへ</a>
+    </div>
+    <div style="margin:10px 0;text-align: center;">
+      <%= link_to(render_pc_url(request.original_fullpath)) do %>
+          <i class="fa fa-desktop" aria-hidden="true"></i> PC版で見る
+      <% end %>
+    </div>
+    <div style="margin:10px 0;text-align: center;">
+      <a href="/others/about.html">当サイトについて</a>
+    </div>
+    <div style="margin:10px 0;text-align: center;">
+      <a href="/others/toiawase.html"><i class="fa fa-envelope-o" aria-hidden="true"></i> お問い合わせ</a>
+    </div>
+  </div>
+  <div style="margin:10px 0;text-align: center;border-top: 1px #999999 solid;">
+    <p>Copyright© program777.com All Rights Reserved.</p>
+  </div>
+</footer>
+<script src="https://fastcdn.org/Lightbox/2.8.1/js/lightbox.min.js"></script>
+</body>
 </html>

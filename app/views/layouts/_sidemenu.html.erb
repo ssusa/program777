@@ -1,0 +1,15 @@
+<div class="panel panel-default" style="border-radius: 0">
+  <div class="panel-heading" style="padding-left:10px;padding-bottom:8px;">
+    <i class="fa fa-star-o" aria-hidden="true" style="font-size:16pt;"></i>
+    <h2 style="display:inline;font-size: 16pt;"> 記事一覧</h2>
+  </div>
+  <div class="list-group" >
+    <ul style="padding-left:10px;padding-right:10px">
+      <% Test.all.each do |test| %>
+          <li style="display:inline-block;margin-top:10px;">
+            <a href="#" class="list-group-item" style="padding:3px;"><%= test.gengo_nm %></a>
+          </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

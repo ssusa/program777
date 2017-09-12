@@ -1,0 +1,29 @@
+<p style="text-align: center;margin-top:10px;">お問い合わせは以下よりお願いいたします。</p>
+<%= form_tag(others_toiawase_send_mail_path) do %>
+    <table class="type01" style="margin-bottom:20px;width:100%">
+      <thead>
+
+      </thead>
+      <tbody>
+      <tr>
+        <th style="width:18%">名前</th>
+        <td style="text-align: left">
+          <input type="text" maxlength="20" name="namae" style="width:90%" />
+        </td>
+      </tr>
+      <tr>
+        <th>メールアドレス</th>
+        <td style="text-align: left">
+          <input type="text" maxlength="50" name="mail_address" style="width:90%" />
+        </td>
+      </tr>
+      <tr>
+        <th>内容</th>
+        <td style="text-align: left">
+          <textarea rows="10" maxlength="1000" name="naiyo" style="width:95%" ></textarea>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <input type="submit" class="btn btn-primary" style="width:150px;margin-bottom:20px;display: block;margin-right: auto;margin-left: auto;" />
+<% end %>
