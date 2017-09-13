@@ -1,0 +1,31 @@
+<div style="padding:20px 0 0 0;">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>タスク</th>
+        <th>期限</th>
+        <th>完了</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @tasks.each do |task| %>
+      <tr>
+        <td><%= @grid_no.to_s %></td>
+        <td><%= task.name %></td>
+        <td><%= task.kigen.strftime("%Y/%m/%d") %></td>
+        <td><%= task.kanryo %></td>
+      </tr>
+      <% @grid_no = @grid_no + 1 %>
+    <% end %>
+    <tbody>
+  </table>
+  <%= will_paginate @tasks,
+                    renderer: BootstrapPagination::Rails,
+                    previous_label: "前へ",
+                    next_label: "次へ",
+                    inner_window: 1,
+                    outer_window: 0,
+                    class:"pagination-sm"
+  %>
+</div>

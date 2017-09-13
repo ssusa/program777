@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170911165012) do
+ActiveRecord::Schema.define(version: 20170913154307) do
+
+  create_table "samples_task_kanri_tasks", force: :cascade do |t|
+    t.string   "name"
+    t.string   "shosai"
+    t.datetime "kigen"
+    t.boolean  "kanryo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "tests", force: :cascade do |t|
     t.string   "gengo_cd"
