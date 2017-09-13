@@ -5,29 +5,40 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta charset="utf-8" />
   <%= csrf_meta_tags %>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <%= stylesheet_link_tag 'application', media: 'all' %>
   <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-  <%= javascript_include_tag 'application' %>
 </head>
 <body>
 <header id="header" style="background-color: #333;color:#fff">
   <div class="container">
-    <h1>
-      タスク管理（ruby on rails sample）
-    </h1>
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>
+          タスク管理（ruby on rails sample）
+        </h1>
+      </div>
+    </div>
   </div>
 </header>
 <main id="main">
   <div class="container">
-    <%= yield %>
+    <div class="row">
+      <div class="col-xs-12">
+        <%= yield %>
+      </div>
+    </div>
   </div>
 </main>
-<footer id="footer" class="container">
-  <div style="margin:10px 0;text-align: center;border-top: 1px #999999 solid;">
-    <p>Copyright© program777.com All Rights Reserved.</p>
+<footer id="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div style="margin:10px 0;text-align: center;border-top: 1px #999999 solid;">
+          <p>Copyright© program777.com All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </footer>
 </body>
