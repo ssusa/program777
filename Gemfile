@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '= 5.0.2'
+gem 'rails-ujs', '= 0.1.0'
 gem 'sqlite3', '= 1.3.13'
 gem 'puma', '= 3.9.1'
 gem 'uglifier', '= 3.2.0'
@@ -22,3 +23,10 @@ group :development do
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+source 'https://rubygems.org'
+
+git_source(:github) do |repo_name|
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  "https://github.com/#{repo_name}.git"
+end

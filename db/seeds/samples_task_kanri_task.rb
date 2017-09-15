@@ -32,3 +32,12 @@ SamplesTaskKanriTask.create!(
   kigen:target+3,
   kanryo:false
 )
+for i in 1..30 do
+  kanryo = i % 2 == 0 ? true : false
+  SamplesTaskKanriTask.create!(
+    name:"sampleタスク" + i.to_s,
+    shosai:"sampleタスク詳細1234567890",
+    kigen:target+10,
+    kanryo:kanryo
+  )
+end

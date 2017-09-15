@@ -1,11 +1,19 @@
+<h2>一覧画面</h2>
 <div style="padding:20px 0 0 0;">
+  <div style="height:40px;">
+    <%= link_to("全て表示する", samples_task_kanri_tasks_path, style:"display:inline-block;margin:10px;") %>
+    <%= link_to("完了のみ", samples_task_kanri_tasks_path + "?kanryo=true", style:"display:inline-block;margin:10px;") %>
+    <%= link_to("未完了のみ", samples_task_kanri_tasks_path + "?kanryo=false", style:"display:inline-block;margin:10px;") %>
+    <%= link_to("タスクを登録", new_samples_task_kanri_task_path, class:"btn btn-primary", style:"float:right") %>
+  </div>
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th>No</th>
-        <th>タスク</th>
-        <th>期限</th>
-        <th>完了</th>
+        <th style="width:10%">No</th>
+        <th style="width:40%">タスク</th>
+        <th style="width:10%">期限</th>
+        <th style="width:20%">完了ステータス</th>
+        <th style="width:20%"></th>
       </tr>
     </thead>
     <tbody>
@@ -14,18 +22,25 @@
         <td><%= @grid_no.to_s %></td>
         <td><%= task.name %></td>
         <td><%= task.kigen.strftime("%Y/%m/%d") %></td>
-        <td><%= task.kanryo %></td>
+        <td><%= sample_task_kanri_kanryo_str(task) %></td>
+        <td>
+          <%= link_to("照会", samples_task_kanri_task_path(task), class:"btn btn-sm btn-primary") %>
+          <%= link_to("編集", edit_samples_task_kanri_task_path(task), class:"btn btn-sm btn-primary") %>
+          <%= link_to "削除", samples_task_kanri_task_path(task), method:"delete", class:"btn btn-sm btn-danger" %>
+        </td>
       </tr>
       <% @grid_no = @grid_no + 1 %>
     <% end %>
     <tbody>
   </table>
-  <%= will_paginate @tasks,
-                    renderer: BootstrapPagination::Rails,
-                    previous_label: "前へ",
-                    next_label: "次へ",
-                    inner_window: 1,
-                    outer_window: 0,
-                    class:"pagination-sm"
-  %>
+  <div style="text-align: center">
+    <%= will_paginate @tasks,
+                      renderer: BootstrapPagination::Rails,
+                      previous_label: "前へ",
+                      next_label: "次へ",
+                      inner_window: 1,
+                      outer_window: 0,
+                      class:"pagination-sm"
+    %>
+  </div>
 </div>
