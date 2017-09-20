@@ -1,6 +1,8 @@
 #coding: utf-8
 class SamplesTaskKanriTask < ApplicationRecord
 
+  attr_accessor :kigen_str
+
   scope :by_kanryo, ->(kanryo){
     if kanryo.present?
       kanryo_bool = true

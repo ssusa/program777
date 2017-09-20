@@ -14,11 +14,18 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta charset="utf-8" />
   <%= csrf_meta_tags %>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <%= javascript_include_tag 'application' %>
-  <link rel="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.js">
+  <script>
+    $(function() {
+      $("#samples_task_kanri_task_kigen_str").datepicker();
+      $('#samples_task_kanri_task_kigen_str').datepicker("option", "dateFormat", 'yymmdd' );
+    });
+  </script>
 </head>
 <body>
 <header id="header" style="background-color: #333;color:#fff">

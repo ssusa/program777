@@ -23,6 +23,14 @@ class Samples::TaskKanri::TasksController < ApplicationController
   #新規データ作成
   def create
 
+    @task = SamplesTaskKanriTask.new(task_params)
+    @task.kigen = to_date_from_ymd(@task.kigen_str)
+    @kanryo = false
+    @task.save
+
+    flash[:notice] = "登録しました。"
+    redirect_to samples_task_kanri_tasks_path
+
   end
 
   #編集フォーム表示
@@ -47,11 +55,23 @@ class Samples::TaskKanri::TasksController < ApplicationController
 
   private
 
+  #ストロングパラメータ（マスアサインメント脆弱性回避）
   def task_params
-    params.require(:task).permit(
+    params.require(:samples_task_kanri_task).permit(
       :name,
       :shosai,
-      :kigen
+      :kigen_str
     )
+  end
+
+  def to_date_from_ymd(ymd)
+    result = nil
+    begin
+      result = Date.new(ymd[0..3].to_i, ymd[4..5].to_i, ymd[6..7].to_i)
+      byebug
+    rescue
+      result = nil
+    end
+    result
   end
 end

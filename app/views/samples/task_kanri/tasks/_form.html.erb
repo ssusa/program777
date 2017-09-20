@@ -1,14 +1,8 @@
-  タスク：
-  <%= f.text_field :name %>
-  <br>
-  タスク詳細：
-  <%= f.text_area :shosai %>
-  <br>
-  <%= f.date_select :kigen,
-                       {start_year: Time.now.year, end_year: Time.now.year + 2,
-                        use_month_numbers: true,
-                        date_separator: '/',
-                        include_blank: true},
-                    {class: "form-control",
-                     style: "display: inline-block; width: auto;"}
-  %>
+タスク
+<%= f.text_field :name, class:"form-control" %>
+<br>
+タスク詳細
+<%= f.text_area :shosai, class:"form-control" %>
+<br>
+期限
+<%= f.text_field :kigen_str, class:"form-control", style:"width:100px;" %>
