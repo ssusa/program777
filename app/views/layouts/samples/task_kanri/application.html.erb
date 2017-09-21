@@ -19,15 +19,25 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <%= javascript_include_tag 'application' %>
-  <script>
-    $(function() {
-      $("#samples_task_kanri_task_kigen_str").datepicker();
-      $('#samples_task_kanri_task_kigen_str').datepicker("option", "dateFormat", 'yymmdd' );
-    });
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ujs/1.2.2/rails.js"></script>
 </head>
 <body>
+<script>
+  $(function() {
+    if ($("#samples_task_kanri_task_kigen_str").length)
+    {
+      $("#samples_task_kanri_task_kigen_str").datepicker();
+      $("#samples_task_kanri_task_kigen_str").datepicker("option", "dateFormat", 'yymmdd');
+      <% if @task.present? %>
+        $("#samples_task_kanri_task_kigen_str").val("<%= @task.kigen_str %>");
+      <% end %>
+    }
+    if ($(".alert").length)
+    {
+      $(".alert").slideDown();
+    }
+  });
+</script>
 <header id="header" style="background-color: #333;color:#fff">
   <div class="container">
     <div class="row">
@@ -43,6 +53,22 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-12">
+        <% if @task.present? && @task.errors.present? %>
+          <div class="alert alert-danger" style="margin-top:20px;border-width:3px;display:none">
+            <ul>
+              <% @task.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <% if flash[:msg].present? %>
+          <div class="alert alert-info" style="margin-top:20px;border-width:3px;display:none">
+            <ul>
+              <li><%= flash[:msg] %></li>
+            </ul>
+          </div>
+        <% end %>
         <%= yield %>
       </div>
     </div>

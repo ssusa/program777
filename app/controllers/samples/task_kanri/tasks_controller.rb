@@ -22,25 +22,50 @@ class Samples::TaskKanri::TasksController < ApplicationController
 
   #新規データ作成
   def create
-
     @task = SamplesTaskKanriTask.new(task_params)
-    @task.kigen = to_date_from_ymd(@task.kigen_str)
-    @kanryo = false
-    @task.save
+    if @task.valid?
+      if @task.kigen_str.present?
+        @task.kigen = Date.new(
+          @task.kigen_str[0..3].to_i,
+          @task.kigen_str[4..5].to_i,
+          @task.kigen_str[6..7].to_i)
+      end
+      @task.kanryo = false
+      @task.save(validate:false)
 
-    flash[:notice] = "登録しました。"
-    redirect_to samples_task_kanri_tasks_path
-
+      flash[:msg] = "登録しました。"
+      redirect_to samples_task_kanri_tasks_path
+    else
+      render "new"
+    end
   end
 
   #編集フォーム表示
   def edit
-
+    @task = SamplesTaskKanriTask.find(params[:id])
+    if @task.kigen.present?
+      @task.kigen_str = @task.kigen.strftime("%Y%m%d")
+    end
   end
 
   #編集データ更新
   def update
+    @task = SamplesTaskKanriTask.find(params[:id])
+    @task.assign_attributes(task_params)
+    if @task.valid?
+      if @task.kigen_str.present?
+        @task.kigen = Date.new(
+          @task.kigen_str[0..3].to_i,
+          @task.kigen_str[4..5].to_i,
+          @task.kigen_str[6..7].to_i)
+      end
+      @task.save(validate:false)
 
+      flash[:msg] = "編集しました。"
+      redirect_to samples_task_kanri_tasks_path
+    else
+      render "edit"
+    end
   end
 
   #データ表示
@@ -50,10 +75,15 @@ class Samples::TaskKanri::TasksController < ApplicationController
 
   #データ削除
   def destroy
-
+    @task = SamplesTaskKanriTask.find(params[:id])
+    @task.destroy
+    flash[:msg] = "削除しました。"
+    redirect_to samples_task_kanri_tasks_path
   end
 
+  #------------------------------------------------------------------------------
   private
+  #------------------------------------------------------------------------------
 
   #ストロングパラメータ（マスアサインメント脆弱性回避）
   def task_params
@@ -62,16 +92,5 @@ class Samples::TaskKanri::TasksController < ApplicationController
       :shosai,
       :kigen_str
     )
-  end
-
-  def to_date_from_ymd(ymd)
-    result = nil
-    begin
-      result = Date.new(ymd[0..3].to_i, ymd[4..5].to_i, ymd[6..7].to_i)
-      byebug
-    rescue
-      result = nil
-    end
-    result
   end
 end
