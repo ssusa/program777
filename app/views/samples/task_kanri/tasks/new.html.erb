@@ -2,7 +2,6 @@
 <div style="padding:30px;margin-bottom:20px;border-radius:4px;border:2px solid #ddd">
   <%= form_for @task do |f| %>
     <%= render "form", f: f %>
-
     <div class="row well" style="margin-top:20px;margin-bottom:0">
       <div class="col-sm-12">
         <%= link_to "キャンセル", samples_task_kanri_tasks_path, class:"btn btn-lg btn-default", style:"float:left" %>

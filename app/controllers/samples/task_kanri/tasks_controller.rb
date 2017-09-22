@@ -70,7 +70,7 @@ class Samples::TaskKanri::TasksController < ApplicationController
 
   #データ表示
   def show
-
+    @task = SamplesTaskKanriTask.find(params[:id])
   end
 
   #データ削除
