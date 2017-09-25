@@ -13,6 +13,7 @@
   <title>タスク管理(ruby on rails サンプル)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <%= csrf_meta_tags %>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -34,7 +35,7 @@
     }
     if ($(".alert").length)
     {
-      $(".alert").slideDown();
+      $(".alert").show();
     }
   });
 </script>

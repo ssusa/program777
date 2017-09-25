@@ -7,7 +7,7 @@ class Samples::TaskKanri::TasksController < ApplicationController
   def index
     @tasks = SamplesTaskKanriTask
               .by_kanryo(params[:kanryo])
-              .paginate(page: params[:page], per_page: 5).order('kigen asc')
+              .paginate(page: params[:page], per_page: 5).order('kanryo asc, kigen asc')
 
     @grid_no = 1
     if params[:page].present?
@@ -71,6 +71,7 @@ class Samples::TaskKanri::TasksController < ApplicationController
   #データ表示
   def show
     @task = SamplesTaskKanriTask.find(params[:id])
+    render "show"
   end
 
   #データ削除
@@ -78,7 +79,15 @@ class Samples::TaskKanri::TasksController < ApplicationController
     @task = SamplesTaskKanriTask.find(params[:id])
     @task.destroy
     flash[:msg] = "削除しました。"
-    redirect_to samples_task_kanri_tasks_path
+    redirect_to request.referer
+  end
+
+  #完了
+  def kanryo
+    @task = SamplesTaskKanriTask.find(params[:id])
+    @task.kanryo = true
+    @task.save
+    redirect_to request.referer
   end
 
   #------------------------------------------------------------------------------

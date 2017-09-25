@@ -1,11 +1,13 @@
 #coding: utf-8
 module Samples::TaskKanri::TasksHelper
-  def sample_task_kanri_kanryo_str(kanryo)
-    if kanryo == true
-      "完了"
+  def sample_task_kanri_kanryo_tag(task)
+    result = ""
+    if task.kanryo == true
+      result = '済'
     else
-      "未完了"
+      result = '<a class="btn btn-sm btn-primary" href="' + kanryo_samples_task_kanri_task_path(task) + '">完了にする</a>'
     end
+    result.html_safe
   end
 
   def kigen_format(kigen)

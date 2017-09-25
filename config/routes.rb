@@ -10,7 +10,12 @@ Rails.application.routes.draw do
 
   namespace :samples do
     namespace :task_kanri do
-      resources :tasks
+      resources :tasks do
+        member do
+          get "kanryo"
+        end
+      end
     end
   end
 end
+
