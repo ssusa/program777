@@ -21,6 +21,61 @@
   <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ujs/1.2.2/rails.js"></script>
+  <style type="text/css">
+    .waku{
+      padding:20px;
+      margin-bottom:20px;
+      border-radius:4px;
+      border:2px solid #ddd;
+    }
+    @media (max-width: 768px) {
+      a {
+        -webkit-tap-highlight-color: rgba(16, 16, 16, 0.3);
+      }
+      .pc-only{
+        display:none;
+      }
+      .grid-th-width1{
+        width:0%;
+      }
+      .grid-th-width2{
+        width:50%;
+      }
+      .grid-th-width3{
+        width:15%;
+      }
+      .grid-th-width4{
+        width:20%;
+      }
+      .grid-th-width5{
+        width:15%;
+      }
+      .henshu-cell a{
+        display:block;
+        text-align:center;
+      }
+    }
+    @media (min-width: 769px) {
+      .grid-th-width1{
+        width:10%;
+      }
+      .grid-th-width2{
+        width:55%;
+      }
+      .grid-th-width3{
+        width:10%;
+      }
+      .grid-th-width4{
+        width:10%;
+      }
+      .grid-th-width5{
+        width:15%;
+      }
+      .henshu-cell a{
+        margin-right:10px;
+      }
+    }
+  </style>
 </head>
 <body>
 <script>

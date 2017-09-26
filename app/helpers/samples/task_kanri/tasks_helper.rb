@@ -5,7 +5,7 @@ module Samples::TaskKanri::TasksHelper
     if task.kanryo == true
       result = '済'
     else
-      result = '<a class="btn btn-sm btn-primary" href="' + kanryo_samples_task_kanri_task_path(task) + '">完了にする</a>'
+      result = '<a class="btn btn-sm btn-primary" href="' + kanryo_samples_task_kanri_task_path(task) + '">完了</a>'
     end
     result.html_safe
   end
