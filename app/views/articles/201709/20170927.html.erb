@@ -1,0 +1,69 @@
+<h1>1章 作成するアプリの仕様について理解する ruby on rails タスク管理アプリ</h1>
+
+<p>
+  最初に、作るものを確認します。仕様の確認です。<br>
+  自分の技量の中で作れるものを作るのではなくて、ユーザが求めるものを作ることが大事です。<br>
+  ここでは、既に出来上がっているものがありますので、<a style="text-decoration: underline" target="_blank" href="/samples/task_kanri/tasks">サンプル</a>と全く同じように作成していきます。<br>
+  まず、画面の種類を確認してみます。
+</p>
+
+<h2>画面の種類は以下の4種類</h2>
+<p>
+<ul>
+  <li>一覧画面</li>
+  <li>新規画面</li>
+  <li>編集画面</li>
+  <li>確認画面</li>
+</ul>
+</p>
+<h2>データとして登録するもの</h2>
+<p>
+<ul>
+  <li>タスクのタイトル</li>
+  <li>タスクの詳細情報</li>
+  <li>タスクの期限</li>
+  <li>タスクが完了したかのフラグ</li>
+</ul>
+</p>
+<p>
+  ruby on railsのスタート教材になれるよう、説明していきます。<br>
+  webアプリ初心者でも作成できるように、html、javascript、cssは重視せず、
+  webの基本的な知識からruby on railsの作りを覚えられることを目的としています。<br>
+  プログラムの作り方の流れを覚えられるよう、仕様の確認、簡単な設計の説明もしていきます。
+</p>
+
+<h2>環境構築</h2>
+<p>
+  勉強用の基本的なアプリですので、<strong>OS、ruby、railsのバージョンはあまり関係ありません</strong>が、
+  rails4からの機能を使用するので、コピペで作成したいのであれば、<strong>ruby＝2以上、rails＝4以上がオススメです。</strong><br>
+  私の環境は以下の通りです。
+<ul>
+  <li>OS＝mac</li>
+  <li>ruby＝2.3.1p112</li>
+  <li>rails＝5.0.2</li>
+</ul>
+環境構築の説明は長くなってしまうので、ここでは行いませんが、
+<strong>最初のrails newコマンドが成功すれば環境はOKです。</strong>
+</p>
+
+<h2>使用する技術</h2>
+<p>
+<ul>
+  <li>html5</li>
+  <li>css（cssファイルは使用しません）</li>
+  <li>javascript（jsファイルは使用しません。少しだけ使用します）</li>
+  <li>jquery（少しだけ使用します）</li>
+  <li>ruby on rails</li>
+  <li>bootstrap（cssのみ）</li>
+  <li>sqlite3</li>
+</ul>
+</p>
+
+<h2>作成するWebアプリのサンプル</h2>
+<p>
+  別windowで開きます。（登録とかもできます。）<br>
+  <a style="text-decoration: underline" target="_blank" href="/samples/task_kanri/tasks">タスク管理 サンプル (ruby on rails)</a><br>
+  これと同じものを作成します。<br><br>
+  ※このサイト「program777」自体がrailsで作成されており、
+  その中にサンプルを作っているため、ソースは若干違いますが、動きは全く同じものを作ります。
+</p>
