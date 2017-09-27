@@ -28,6 +28,10 @@ a:focus {
   text-decoration: underline;
 }
 
+ul{
+  padding-left:20px;
+}
+
 .btn {
   display: inline-block;
   padding: 6px 12px;
@@ -344,6 +348,13 @@ a.label:focus {
 .label-danger[href]:hover,
 .label-danger[href]:focus {
   background-color: #c9302c;
+}
+
+.img-responsive{
+  vertical-align: middle;
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 @media (max-width: 768px) {

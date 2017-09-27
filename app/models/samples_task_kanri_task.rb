@@ -40,8 +40,8 @@ class SamplesTaskKanriTask < ApplicationRecord
 
   #shosaiのバリデーション
   def check_shosai
-    if shosai.present? && shosai.length > 200
-      errors.add("タスク詳細","は200文字以内で入力してください")
+    if shosai.present? && shosai.length > 100
+      errors.add("タスク詳細","は100文字以内で入力してください")
     end
   end
 

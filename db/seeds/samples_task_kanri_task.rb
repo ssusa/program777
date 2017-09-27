@@ -10,7 +10,7 @@ SamplesTaskKanriTask.create!(
 )
 SamplesTaskKanriTask.create!(
   name:"環境構築",
-  shosai:"windowsでruby on rails5の環境構築を行う",
+  shosai:"macでruby on rails5の環境構築を行う",
   kigen:target,
   kanryo:false
 )
