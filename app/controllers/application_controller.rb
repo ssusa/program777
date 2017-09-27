@@ -7,8 +7,11 @@ class ApplicationController < ActionController::Base
   def default_before_filter
 
     @const_site_title = "program777"
-    @description = "ITの基礎知識からプログラムの書き方まで紹介"
-    @keyword = "html,C#,ruby on rails"
+    @twitter_image_url = "https://images.program777.com/program.jpg"
+    @description = "ruby on railsのサンプルプログラムの作成手順を初心者でもわかるように1から解説しています"
+    #タイトルタグとツイッタータイトルになるため、上書きしないとだめ。
+    @page_title = "program777"
+    @keyword = "ruby on rails"
 
     @render_mode = "pc"
     if params[:render_mode].present?
