@@ -9,9 +9,10 @@ class ApplicationController < ActionController::Base
     @const_site_title = "program777"
     @twitter_image_url = "https://images.program777.com/program.jpg"
     @description = "ruby on railsのサンプルプログラムの作成手順を初心者でもわかるように1から解説しています"
-    #タイトルタグとツイッタータイトルになるため、上書きしないとだめ。
-    @page_title = "program777"
     @keyword = "ruby on rails"
+
+    #タイトルとツイッタータイトルになるため、上書きしないとだめ。
+    @page_title = "program777"
 
     @render_mode = "pc"
     if params[:render_mode].present?
