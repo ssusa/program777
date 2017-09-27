@@ -386,6 +386,47 @@ a.label:focus {
   }
 }
 
+h2.midashi01{
+  margin-top:0px;
+  margin-bottom:10px;
+  padding: 0.3em 0.5em;
+  color: #000000;
+  background: #eeddee;
+  border-left: solid 5px #7db4e6;
+}
+h3.midashi01{
+  margin-top:0px;
+  margin-bottom:10px;
+  padding: 0.3em 0.5em;
+  color: #000000;
+  background: #eeddee;
+  border-left: solid 5px #7db4e6;
+}
+
+table.type01 {
+  border-collapse: collapse;
+  text-align: center;
+  line-height: 1.5;
+  border: 2px solid #777;
+}
+table.type01 thead th {
+  padding: 5px;
+  background: #333;
+  color: #fff;
+  font-weight: normal;
+  border: 1px solid #777;
+}
+table.type01 tbody th {
+  padding: 5px;
+  background: #999;
+  color: #fff;
+  font-weight: normal;
+  border: 1px solid #777;
+}
+table.type01 td {
+  padding: 5px;
+  border: 1px solid #777;
+}
 .box{
   -webkit-box-shadow: 0px 0px 3px #777777;
   -moz-box-shadow: 0px 0px 3px #777777;
