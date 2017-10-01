@@ -5,6 +5,15 @@
   border: 2px solid #dbe8ef  !important;
 }
 
+.prettyprint-filename{
+
+  background: #dbe8ef;
+  border-radius: 5px 5px 0 0;
+  color:#777;
+  font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
+  border: 2px solid #dbe8ef;
+}
+
 /* これは自分で追加した */
 .console{
   background: #333;

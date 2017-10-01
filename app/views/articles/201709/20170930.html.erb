@@ -28,6 +28,7 @@
   このファイルを元に「bundle install」を行うことで、アプリにライブラリがインストールされます。</strong>
 </p>
 
+<br>
 <h2 class="midashi01">Gemfileを書き換える</h2>
 <p>
   さきほど作成したtask_kanriフォルダ直下にあるGemfileを、今回作成するアプリ用に書き換えます。<br>
@@ -36,7 +37,8 @@
   そのままコピーペーストして、「bundle install」でgemをインストールしなおします。
 </p>
 
-<pre class="prettyprint">
+<span class="prettyprint-filename">task_kanri/Gemfile</span>
+<pre class="prettyprint" style="margin-top:0">
   #coding: utf-8
   source 'https://rubygems.org'
 
@@ -73,6 +75,7 @@
   $ bundle install
 </pre>
 
+<br>
 <h2 class="midashi01">サンプルページを表示する</h2>
 <p>
   コンソールで以下を実行するとウェブサーバーが起動しますので、コンソールはその状態にしたまま、
@@ -80,6 +83,27 @@
   railsのサンプルページが開けばOKです。<br>
   ウェブサーバーを停止したい場合は、「ctrl + c」で停止します。
 </p>
+
+
 <pre class="console">
   $ rails s
+</pre>
+
+<div class="box">
+  <a href="https://www.images.program777.com/201709/20170930_1.jpg" data-lightbox="20170930_1">
+    <img src="https://www.images.program777.com/201709/20170930_1.jpg" style="width:100%">
+  </a>
+</div>
+
+<p>
+  <strong>「rails s」で以下のようなエラーメッセージが表示され、サーバーが起動できない場合</strong>は
+  task_kanri/config/application.rbの中にある「config.load_defaults 5.1」をコメントしてください。<br>
+  エラーメッセージ → 〜〜/lib/rails/railtie/configuration.rb:95:in `method_missing': undefined method `load_defaults' for〜〜<br>
+
+</p>
+
+<span class="prettyprint-filename">task_kanri/config/application.rb</span>
+<pre class="prettyprint" style="margin-top:0">
+    #この行をコメントする
+    #config.load_defaults 5.1
 </pre>
