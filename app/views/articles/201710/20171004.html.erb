@@ -35,7 +35,7 @@
 <h3 class="midashi02">rails g modelとは</h3>
 <p>
   ActiveRecordのモデルを作成してくれるコマンドです。以下の2ファイルが作成されます。<br>
-  マイグレーションファイル → task_kanri/db/migrate/20171004161313_create_tasks.rb<br>
+  マイグレーションファイル → task_kanri/db/migrate/2017~_create_tasks.rb<br>
   モデル → task_kanri/app/models/task.rb
 </p>
 <h3 class="midashi02">マイグレーションファイルとは</h3>
@@ -49,7 +49,7 @@
 <h2 class="midashi01">マイグレーションする</h2>
 <p>
   <a style="text-decoration: underline" href="/articles/201709/20170927">仕様の確認の記事</a>でも記載しましたが、
-  以下のテーブルを作成しますので、「task_kanri/db/migrate/20171004161313_create_tasks.rb」ファイルにそのままコピーペーストして「rake db:migrate」コマンドを実行します。<br>
+  以下のテーブルを作成しますので、「task_kanri/db/migrate/2017~_create_tasks.rb」ファイルにそのままコピーペーストして「rake db:migrate」コマンドを実行します。<br>
   コマンドが流れてSQlite3にテーブルが作成されたログが出力されます。
 </p>
 <ul>
@@ -64,8 +64,8 @@
   </li>
 </ul>
 
-<span class="prettyprint-filename">/db/2017〜_create_tasks.rb</span>
-<pre class="prettyprint" style="margin-top:0;overflow-x: scroll;">
+<span class="prettyprint-filename">/db/2017~_create_tasks.rb</span>
+<pre class="prettyprint">
 
   #coding: utf-8
   class CreateTasks < ActiveRecord::Migration[5.0]
@@ -79,6 +79,7 @@
       end
     end
   end
+
 
 </pre>
 
