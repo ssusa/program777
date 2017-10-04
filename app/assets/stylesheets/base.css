@@ -28,10 +28,17 @@ a:focus {
   text-decoration: underline;
 }
 
+#main a{
+  line-height: 1.6;
+}
+
 ul{
   padding-left:20px;
 }
 
+/*-------------------------------------------*/
+/* ここからbootstrap */
+/*-------------------------------------------*/
 .btn {
   display: inline-block;
   padding: 6px 12px;
@@ -356,6 +363,9 @@ a.label:focus {
   max-width: 100%;
   height: auto;
 }
+/*-------------------------------------------*/
+/* ここまでbootstrap */
+/*-------------------------------------------*/
 
 @media (max-width: 768px) {
   .container {
@@ -401,6 +411,39 @@ h3.midashi01{
   color: #000000;
   background: #eeddee;
   border-left: solid 5px #7db4e6;
+}
+/* 下線 だんだん薄くなる
+h3.midashi02{
+  width:50%;
+  position: relative;
+  padding: 0.25em 0;
+}
+h3.midashi02:after {
+  content: "";
+  display: block;
+  height: 3px;
+  background: -moz-linear-gradient(to right, rgb(230, 90, 90), transparent);
+  background: -webkit-linear-gradient(to right, rgb(230, 90, 90), transparent);
+  background: linear-gradient(to right, rgb(230, 90, 90), transparent);
+}
+*/
+
+/* アイコン */
+h3.midashi02 {
+  position: relative;/*相対位置*/
+  padding-left: 1.2em;/*アイコン分のスペース*/
+  line-height: 1.4;/*行高*/
+  margin-bottom: 0;
+}
+
+h3.midashi02:before{
+  font-family: FontAwesome;/*忘れずに*/
+  content: "\f0a4";/*アイコンのユニコード*/
+  position: absolute;/*絶対位置*/
+  font-size: 1em;/*サイズ*/
+  left: 0;/*アイコンの位置*/
+  top: 0;/*アイコンの位置*/
+  color: #5ab9ff; /*アイコン色*/
 }
 
 table.type01 {

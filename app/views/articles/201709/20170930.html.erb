@@ -12,16 +12,16 @@
   $ rails new task_kanri
 </pre>
 
-<h3>gemとは</h3>
+<h3 class="midashi02">gemとは</h3>
 <p>
   Ruby用のパッケージ管理ツールのことで、Ruby用ライブラリのインストール、アンインストール、バージョン管理などを簡単に実行することができます。<br>
   gemはだれでも自由に作成できるので、作成元が信用できないgemを使う場合は注意が必要です。
 </p>
-<h3>bundle installとは</h3>
+<h3 class="midashi02">bundle installとは</h3>
 <p>
   Gemfileに記載されているgemをアプリ（ここではtask_kanri）にインストールすることです。
 </p>
-<h3>Gemfileとは</h3>
+<h3 class="midashi02">Gemfileとは</h3>
 <p>
   アプリにインストールするgemを記載したrailsアプリの中にあるファイルです。<br>このファイルは「rails new task_kanri」コマンドで作成されました。<br>
   <strong>非常に重要なファイルで、このファイルを書き換えることで、DBの種類を決定したり、使うライブラリを設定します。
@@ -38,7 +38,8 @@
 </p>
 
 <span class="prettyprint-filename">task_kanri/Gemfile</span>
-<pre class="prettyprint" style="margin-top:0">
+<pre class="prettyprint" style="margin-top:0;overflow-x: scroll;">
+
   #coding: utf-8
   source 'https://rubygems.org'
 
@@ -70,10 +71,13 @@
     gem 'listen', '>= 3.0.5', '< 3.2'
 
   end
+
 </pre>
+
 <pre class="console">
   $ bundle install
 </pre>
+
 
 <br>
 <h2 class="midashi01">サンプルページを表示する</h2>
@@ -103,7 +107,9 @@
 </p>
 
 <span class="prettyprint-filename">task_kanri/config/application.rb</span>
-<pre class="prettyprint" style="margin-top:0">
-    #この行をコメントする
-    #config.load_defaults 5.1
+<pre class="prettyprint">
+
+  #この行をコメントする
+  #config.load_defaults 5.1
+
 </pre>

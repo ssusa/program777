@@ -9,6 +9,8 @@ class ArticlesController < ApplicationController
         @page_title = "作成するアプリの仕様 (タスク管理)"
       elsif params[:yyyymmdd] == "20170930"
         @page_title = "railsプロジェクト作成 (タスク管理)"
+      elsif params[:yyyymmdd] == "20171004"
+        @page_title = "データベース作成 (タスク管理)"
       end
       render "articles/" + params[:yyyymm] + "/" + params[:yyyymmdd]
     else
