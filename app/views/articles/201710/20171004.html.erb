@@ -3,7 +3,7 @@
 <p>
   一般的にアプリを作成するときは、データベースから作成していくと楽です。
   なぜなら、上位階層であるhtmlや処理部分を作成してもデータがないと動かせないし、データベースの仕様はあまりブレないからです。<br>
-  データベース自体の作成は<a style="text-decoration: underline" href="/articles/201709/20170930">前回の記事</a>の「bundle install」で出来上がっています。
+  データベース自体は<a style="text-decoration: underline" href="/articles/201709/20170930">前回の記事</a>の「bundle install」で出来上がっています。
   ファイルは「task_kanri/db/development.sqlite3」です。
   もちろん中身は空でテーブルがありませんので、ここではテーブルとモデルの作成を行います。
 </p>
@@ -12,7 +12,7 @@
 <h2 class="midashi01">modelの作成</h2>
 <p>
   まずはモデルを作成します。タスク管理アプリのモデル（ActiveRecord）は1つだけです。<br>
-  task_kanriディレクトリ直下で以下のコマンドを実行してください。taskのマイグレーションファイルとモデルファイルが出来上がります。
+  task_kanriディレクトリで以下のコマンドを実行してください。taskのマイグレーションファイルとモデルファイルが出来上がります。
 </p>
 
 <pre class="console">
