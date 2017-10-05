@@ -1,3 +1,6 @@
+/*-------------------------------------------*/
+/* ここからタグ全体にかかるCSS */
+/*-------------------------------------------*/
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -28,14 +31,17 @@ a:focus {
   text-decoration: underline;
 }
 
-#main a{
-  line-height: 1.6;
+p{
+  line-height: 1.7;
+  word-break: break-all;
 }
 
 ul{
   padding-left:20px;
 }
-
+/*-------------------------------------------*/
+/* ここまでタグ全体にかかるCSS */
+/*-------------------------------------------*/
 /*-------------------------------------------*/
 /* ここからbootstrap */
 /*-------------------------------------------*/
@@ -382,6 +388,9 @@ a.label:focus {
     padding:10px 0;
     font-family: 'Press Start 2P'
   }
+  h1#page-title{
+
+  }
 }
 @media (min-width: 769px) {
   .container {
@@ -393,6 +402,10 @@ a.label:focus {
     margin:0;
     padding:10px 0;
     font-family: 'Press Start 2P'
+  }
+  h1#page-title{
+    font-size:18pt;
+    border-bottom: solid 3px black;
   }
 }
 

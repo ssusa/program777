@@ -42,9 +42,13 @@ class Samples::TaskKanri::TasksController < ApplicationController
 
   #編集フォーム表示
   def edit
-    @task = SamplesTaskKanriTask.find(params[:id])
-    if @task.kigen.present?
-      @task.kigen_str = @task.kigen.strftime("%Y%m%d")
+    begin
+      @task = SamplesTaskKanriTask.find(params[:id])
+      if @task.kigen.present?
+        @task.kigen_str = @task.kigen.strftime("%Y%m%d")
+      end
+    rescue ActiveRecord::RecordNotFound
+      redirect_to samples_task_kanri_tasks_path
     end
   end
 
@@ -70,8 +74,12 @@ class Samples::TaskKanri::TasksController < ApplicationController
 
   #データ表示
   def show
-    @task = SamplesTaskKanriTask.find(params[:id])
-    render "show"
+    begin
+      @task = SamplesTaskKanriTask.find(params[:id])
+      render "show"
+    rescue ActiveRecord::RecordNotFound
+      redirect_to samples_task_kanri_tasks_path
+    end
   end
 
   #データ削除

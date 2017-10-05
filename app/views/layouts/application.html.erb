@@ -42,19 +42,19 @@
 <body>
 <header id="header" style="background-color: #333;color:#fff">
   <div class="container">
-    <h1 id="title" style="">
-      <%= @const_site_title %>
+    <h1 id="title">
+      <a href="/" style="color:#fff"><%= @const_site_title %></a>
     </h1>
   </div>
 </header>
-<main id="main" style="clear: both;line-height: 1.6;">
+<main id="main" style="clear: both;">
   <% if @render_mode == "sp" && !(params[:render_mode].present? && params[:render_mode] == "pc") %>
       <!--SP-->
       <div class="container">
-        <div style="padding:10px 5px;">
+        <div style="padding:10px;">
           <%= yield %>
         </div>
-        <div style="padding:10px 5px;">
+        <div style="padding:10px;">
           <%= render "layouts/sidemenu" %>
         </div>
       </div>

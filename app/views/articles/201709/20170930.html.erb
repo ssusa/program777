@@ -1,4 +1,4 @@
-<h1><%= @page_title %></h1>
+<h1 id="page-title"><%= @page_title %></h1>
 
 <h2 class="midashi01">railsプロジェクトを作成する</h2>
 <p>
@@ -9,12 +9,12 @@
 </p>
 
 <pre class="console">
-  $ rails new task_kanri
+$ rails new task_kanri
 </pre>
 
 <h3 class="midashi02">gemとは</h3>
 <p>
-  Ruby用のパッケージ管理ツールのことで、Ruby用ライブラリのインストール、アンインストール、バージョン管理などを簡単に実行することができます。<br>
+  Ruby用のパッケージ管理ツールのことで、Ruby用ライブラリのインストール、アンインストール、バージョン管理などを簡単に実行することができます。
   gemはだれでも自由に作成できるので、作成元が信用できないgemを使う場合は注意が必要です。
 </p>
 <h3 class="midashi02">bundle installとは</h3>
@@ -23,7 +23,7 @@
 </p>
 <h3 class="midashi02">Gemfileとは</h3>
 <p>
-  アプリにインストールするgemを記載したrailsアプリの中にあるファイルです。<br>このファイルは「rails new task_kanri」コマンドで作成されました。<br>
+  アプリにインストールするgemを記載したrailsアプリの中にあるファイルです。このファイルは「rails new task_kanri」コマンドで作成されました。<br>
   <strong>非常に重要なファイルで、このファイルを書き換えることで、DBの種類を決定したり、使うライブラリを設定します。
   このファイルを元に「bundle install」を行うことで、アプリにライブラリがインストールされます。</strong>
 </p>
@@ -31,52 +31,49 @@
 <br>
 <h2 class="midashi01">Gemfileを書き換える</h2>
 <p>
-  さきほど作成したtask_kanriフォルダ直下にあるGemfileを、今回作成するアプリ用に書き換えます。<br>
-  今回は初心者向けに必要最低限にしたかったので、これ以上減らせないくらい絞りました。<strong>jqueryなどはcdnから取得します。</strong><br>
-  説明も一応記載しましたが、今は覚えなくても大丈夫です。
+  さきほど作成したtask_kanriフォルダ直下にあるGemfileを、今回作成するアプリ用に書き換えます。
+  今回は初心者向けに必要最低限にしたかったので、これ以上減らせないくらい絞りました。jqueryなどはcdnから取得します。
+  説明も一応記載しましたが、今回のアプリでは覚えなくても大丈夫です。
   そのままコピーペーストして、「bundle install」でgemをインストールしなおします。
 </p>
 
 <span class="prettyprint-filename">/Gemfile</span>
 <pre class="prettyprint">
+#coding: utf-8
+source 'https://rubygems.org'
 
-  #coding: utf-8
-  source 'https://rubygems.org'
+#rails本体
+gem 'rails', '= 5.0.2'
 
-  #rails本体
-  gem 'rails', '= 5.0.2'
+#httpメソッドの置き換えを行ってくれる
+gem 'rails-ujs', '= 0.1.0'
 
-  #httpメソッドの置き換えを行ってくれる
-  gem 'rails-ujs', '= 0.1.0'
+#SQLite3を使うために必要
+gem 'sqlite3', '= 1.3.13'
 
-  #SQLite3を使うために必要
-  gem 'sqlite3', '= 1.3.13'
+#Rubyのウェブサーバー
+gem 'puma', '= 3.9.1'
 
-  #Rubyのウェブサーバー
-  gem 'puma', '= 3.9.1'
+#ページングを簡単に実装できる
+gem 'will_paginate', '= 3.1.6'
 
-  #ページングを簡単に実装できる
-  gem 'will_paginate', '= 3.1.6'
+#will_paginateをbootstrap風にする
+gem 'will_paginate-bootstrap'
 
-  #will_paginateをbootstrap風にする
-  gem 'will_paginate-bootstrap'
+#開発環境でのみ使用するgem
+group :development do
 
-  #開発環境でのみ使用するgem
-  group :development do
+  #デバッグ用に必要
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 
-    #デバッグ用に必要
-    gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  #開発環境でのみ必要なようです（よくわかっていません）
+  gem 'listen', '>= 3.0.5', '< 3.2'
 
-    #開発環境でのみ必要なようです（よくわかっていません）
-    gem 'listen', '>= 3.0.5', '< 3.2'
-
-  end
-
-
+end
 </pre>
 
 <pre class="console">
-  $ bundle install
+$ bundle install
 </pre>
 
 
@@ -84,14 +81,13 @@
 <h2 class="midashi01">サンプルページを表示する</h2>
 <p>
   コンソールで以下を実行するとウェブサーバーが起動しますので、コンソールはその状態にしたまま、
-  ブラウザで「localhost:3000」にアクセスしてみてください。<br>
-  railsのサンプルページが開けばOKです。<br>
+  ブラウザで「localhost:3000」にアクセスして、railsのサンプルページが開けばOKです。<br><br>
   ウェブサーバーを停止したい場合は、「ctrl + c」で停止します。
 </p>
 
 
 <pre class="console">
-  $ rails s
+$ rails s
 </pre>
 
 <div class="box">
@@ -103,15 +99,12 @@
 <p>
   <strong>「rails s」で以下のようなエラーメッセージが表示され、サーバーが起動できない場合</strong>は
   task_kanri/config/application.rbの中にある「config.load_defaults 5.1」をコメントしてください。<br>
-  エラーメッセージ → 〜〜/lib/rails/railtie/configuration.rb:95:in `method_missing': undefined method `load_defaults' for〜〜<br>
-
+  エラーメッセージ → 〜〜/lib/rails/railtie/configuration.rb:95:in `method_missing': undefined method `load_defaults' for〜〜
 </p>
 
+<br>
 <span class="prettyprint-filename">/config/application.rb</span>
 <pre class="prettyprint">
-
-  #この行をコメントする
-  #config.load_defaults 5.1
-
-
+#この行をコメントする
+#config.load_defaults 5.1
 </pre>

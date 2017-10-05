@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
     @keyword = "ruby on rails,サンプル"
 
     #タイトルとツイッタータイトルになるため、上書きしないとだめ。
-    @page_title = "事前準備 (タスク管理)"
+    @page_title = "Railsでタスク管理を作ろう！ 事前準備"
 
     @render_mode = "pc"
     if params[:render_mode].present?
