@@ -1,110 +1,105 @@
-<h1 id="page-title"><%= @page_title %></h1>
-
+<%= render "/articles/article_header" %>
 <p>
-  一般的にアプリを作成するときは、データベースから作成していくと楽です。
-  なぜなら、上位階層であるhtmlや処理部分を作成してもデータがないと動かせないし、データベースの仕様はあまりブレないからです。<br><br>
-  データベース自体は<a style="text-decoration: underline" href="/articles/201709/20170930">前回の記事</a>の「bundle install」で出来上がっています。
-  ファイルは「task_kanri/db/development.sqlite3」です。
-  もちろん中身は空でテーブルがありませんので、ここではテーブルとモデルの作成を行います。
+  テストデータの作成はseedファイルにデータ登録プログラムを書いて、コマンドを実行してデータベースに登録します。
+  今回は初めて普通のrubyコードが出てきたので、1行ずつ解説していきます。難しい場合は、処理の内容だけ理解できればOKです。
 </p>
 
 <br>
-<h2 class="midashi01">modelの作成</h2>
-<p>
-  まずはモデルを作成します。タスク管理アプリのモデル（ActiveRecord）は1つだけです。
-  task_kanriディレクトリで以下のコマンドを実行してください。taskのマイグレーションファイルとモデルファイルが出来上がります。
-</p>
+<h2 class="midashi01">seedファイルを作成する</h2>
 
-<pre class="console">
-$ rails g model task
-</pre>
+<span class="prettyprint-filename">/db/seeds.rb</span>
+<pre class="prettyprint linenums">
+Task.delete_all
 
-<h3 class="midashi02">ActiveRecordとは</h3>
-<p>
-  railsフレームワークの中に含まれるO/Rマッピングのことです。
-  つまり、ここでは<strong>タスク管理アプリとsqliteとのやりとりを簡単に行ってくれるフレームワーク</strong>です。
-  また、実テーブルに紐付いているモデルのことを、ActiveRecordともいいます。
-</p>
-<h3 class="midashi02">Modelとは</h3>
-<p>
-  MVCのMの部分。分かり辛いうちは、単純なクラスと考えてもいいでしょう。
-  railsのルールですが、<strong>モデル名は単数形</strong>です。
-  <strong>モデルがActiveRecordの場合、1つのテーブルにつき、1つのモデルが対応します。</strong>
-  C#をやったことがある人であれば、ActiveRecordが型付DataTableで、ただのModelが型無DataTableと考えればいいでしょう。
-</p>
-<h3 class="midashi02">rails g modelとは</h3>
-<p>
-  ActiveRecordのモデルを作成してくれるコマンドです。以下の2ファイルが作成されます。<br>
-  マイグレーションファイル → task_kanri/db/migrate/2017~_create_tasks.rb<br>
-  モデル → task_kanri/app/models/task.rb
-</p>
-<h3 class="midashi02">マイグレーションファイルとは</h3>
-<p>
-  データベースのテーブルの詳細が書かれたファイルで、このファイルは無くてもアプリは動きます。
-  テーブルの定義を書いて、コマンドを実行することでデータベースにテーブルが作成されます。
-  マイグレーションファイルはActiveRecordと実テーブルの差が出てしまうことを防ぐためにあります。
-</p>
-
-<br>
-<h2 class="midashi01">マイグレーションする</h2>
-<p>
-  <a style="text-decoration: underline" href="/articles/201709/20170927">仕様の確認の記事</a>でも記載しましたが、
-  以下のテーブルを作成しますので、「task_kanri/db/migrate/2017~_create_tasks.rb」ファイルにそのままコピーペーストして「rake db:migrate」コマンドを実行します。
-  コマンドが流れてsqliteにテーブルが作成されたログが出力されます。
-</p>
-<p>
-  マイグレーションファイルにはID列がありませんが、これはrailsの仕様で、<strong>主キーはID列一つと決まっている</strong>からです。
-  ActiveRecordはデータベースに依存しないため、sqliteであれば、オートインクリメント値をID列として自動で設定してくれます。
-  もしデータベースがoracleなのであれば、oracleシーケンスを自動で設定してくれます。プログラムを変えることなく、データベースの変更もできるというわけです。
-</p>
-<p>
-  マイグレーションファイルの最後にあるtimestampsは、created_atとupdated_at列を追加してくれます。
-  INSERT文が走った場合はcreated_atとupdated_atに、UPDATE文が走った場合はupdated_atに更新時間を設定してくれます。
-</p>
-<ul>
-  <li>タスクテーブル
-    <ul>
-      <li>ID（数値型）…主キー</li>
-      <li>タイトル（文字列型）</li>
-      <li>詳細（文字列型）</li>
-      <li>期限（日付型）</li>
-      <li>ステータス（ブール型）</li>
-    </ul>
-  </li>
-</ul>
-
-<span class="prettyprint-filename">/db/2017~_create_tasks.rb</span>
-<pre class="prettyprint">
-#coding: utf-8
-class CreateTasks < ActiveRecord::Migration[5.0]
-  def change
-    create_table :tasks do |t|
-      t.string :name
-      t.string :shosai
-      t.datetime :kigen
-      t.boolean :kanryo
-      t.timestamps
-    end
-  end
+target = Date.today
+Task.create!(
+  name:"環境構築",
+  shosai:"macでruby on rails5の環境構築を行う",
+  kigen:target,
+  kanryo:false
+)
+Task.create!(
+  name:"タスク管理",
+  shosai:"タスク管理アプリを作成する",
+  kigen:target+1,
+  kanryo:false
+)
+Task.create!(
+  name:"http通信",
+  shosai:"http通信のget、postについて勉強する",
+  kigen:target+2,
+  kanryo:false
+)
+Task.create!(
+  name:"bootstrap",
+  shosai:"bootstrapの使い方を覚える",
+  kigen:target+3,
+  kanryo:false
+)
+for i in 1..30 do
+  kanryo = i % 2 == 0 ? true : false
+  Task.create!(
+    name:"sampleタスク" + i.to_s,
+    shosai:"sampleタスク詳細1234567890",
+    kigen:target+10,
+    kanryo:kanryo
+  )
 end
 </pre>
 
+<p>
+  1行目の「Task.delete_all」はTasksテーブルの中身を全て削除します。
+  <strong>大文字から始まる単数形「Task」はモデルを指しており</strong>、ActiveRecordのメソッドとして、delete_allというものがあります。
+</p>
+<p>
+  3行目の「target = Date.today」は変数「target」に今日の日付「Date.today」を代入するという処理です。<strong>rubyでは型の宣言は必要ありません。</strong>
+  Date.todayが日付型のため、targetは日付型となります。
+</p>
+<p>
+  4行目〜9行目は1行目と同じく、「Task」モデルのcreate!メソッドを呼び出しています。「!」までがメソッド名です。
+  引数にはTasksテーブルのカラムと値のハッシュを渡しています。create!メソッドはテーブルにデータを登録するメソッドです。
+  ハッシュはカラムの名前、型が一致している必要があります。つまり、5行目の「name:」はTasksテーブルのカラム名にnameがないとだめで、値は文字列型でなければなりません。
+  10行目〜27行目はこれと同じことをしています。
+</p>
+<p>
+  28行目〜36行目はループで登録処理を30回行っています。rubyではfor文はこのように書きます。
+</p>
+<p>
+  まとめると、最初にTasksテーブルの中身を全て削除して、それより下のコードではテストデータを登録しています。
+</p>
+
+<h3 class="midashi02">ハッシュとは</h3>
+<p>
+  「name:"鈴木"」「age:30」「address:"東京"」のように名前と値がセットになっているものが複数あるオブジェクトです。
+  これごと変数にすることができます。<br>
+  （例）person1 = {name:"鈴木", age:30, address:"東京"}
+</p>
+
+<br>
+<h2 class="midashi01">seedを実行する</h2>
+
+<p>
+  seedファイルにさきほどのコードをコピーペーストして、task_kanriディレクトリで以下のコマンドを実行してください。
+  seedファイルの内容が実行されて、Tasksテーブルにテストデータが登録されます。
+</p>
+
 <pre class="console">
-$ rake db:migrate
+$ rake db:seed
 </pre>
 
-<h3 class="midashi02">rake db:migrateとは</h3>
+<h3 class="midashi02">db:seedとは</h3>
 <p>
-  マイグレーションファイルから実際のテーブルを作成するコマンドです。
-  rails5からrakeコマンドが全てrailsコマンドとしても実行できるようになったため、「rails db:migrate」としても同じです。
+  seedファイルを実行して、データベースにマスタデータやテストデータを登録するコマンドです。
+  開発段階では、データの整合性が取れなくなってしまったりすることがありますが、
+  <strong>今回のように全て削除してから登録のようなseedにしておけば、「rakd db:seed」を流せば壊れたデータが元通りになるので便利です。</strong>
+  「rails db:seed」としても同じです。
 </p>
 
 <br>
 <h2 class="midashi01">テーブルの確認</h2>
 <p>
-  sqliteのテーブルの中身を見れる環境があればいいのですが、無い場合、railsコンソールから見ることができます。
-  task_kanriディレクトリで以下の「rails c」コマンドを実行してコンソール内で「Task.all」と入力します。データがありませんが、SQL文が発行されたのがわかります。
-  終了するときはexitと入力します。
+  テーブルを作成した時と同じように、テストデータが登録されているか見てみます。
+  railsコンソールを起動して、「Task.all」を実行します。前回は空っぽだったテーブルにテストデータが登録されていることが確認できます。
 </p>
 
 <pre class="console">
@@ -115,8 +110,37 @@ $ rails c
 irb(main):001:0> Task.all
 </pre>
 
-<h3 class="midashi02">railsコンソールとは</h3>
+<div class="box01">
+  <a href="https://www.images.program777.com/201710/20171005_1.jpg" data-lightbox="20170930_1">
+    <img src="https://www.images.program777.com/201710/20171005_1.jpg" style="width:100%">
+  </a>
+</div>
+
+<br><br>
+<h2 class="midashi01">railsコンソールで遊んでみよう！</h2>
 <p>
-  railsの環境を読み込んだ状態でrubyコードを実行できるツールです。
-  「Task.all」と入力したことでSQL文(select tasks.* from tasks)がActiveRecord経由で発行されました。
+  Tasksテーブルにテストデータが作成されたので、余裕のある人はrailsコンソールで以下のコマンドを実行したり、いろいろ試してみてください。
+  railsコンソールは、データベースの中身を見るだけでなく、簡単にrubyのコードを確認したいときにも重宝するツールです。
+  終わったら、「rakd db:seed」でテストデータを元に戻しておきましょう。
 </p>
+
+<pre class="console" style="overflow-x: scroll;">
+<span>test1にTasksテーブルの一番最初のレコードを代入する</span>
+$> test1 = Task.first
+
+<span>id1にtest1のidを代入する</span>
+$> id1 = test1.id
+
+<span>idからTasksテーブルを検索する（test1と同じレコードを取得します）</span>
+$> test2 = Task.find(id1)
+
+<span>test2のnameを"rails cのテスト"に変更<br>（これはメモリ上の変更で、Tasksテーブルの値は変わっていません）</span>
+$> test2.name = "rails cのテスト"
+
+<span>test2をTasksテーブルに保存する（UPDATE文が発行され、Tasksテーブルの値が変更されます）</span>
+$> test2.save
+
+<span>Tasksテーブルをもう一度見てみると、nameの値が変更されているはずです</span>
+$> Task.find(id1)
+
+</pre>

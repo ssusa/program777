@@ -1,6 +1,6 @@
 #coding: utf-8
 class TopController < ApplicationController
   def index
-    render "articles/201709/20170926"
+    @page_title = "Webアプリを作りながらRuby on Railsを覚えよう！"
   end
 end

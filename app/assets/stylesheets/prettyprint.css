@@ -1,4 +1,12 @@
 /*! Color themes for Google Code Prettify | MIT License | github.com/jmblog/color-themes-for-google-code-prettify */
+/*
+このファイルは
+prettify.css,
+prettify.js
+とセットでオーバーライドするためもの（それぞれcdnで取得済み）
+ファイルの名前の変更は不可
+*/
+
 .prettyprint {
   font-size: 9pt; /*少し小さくした*/
   background: #ebf8ff;
@@ -28,6 +36,12 @@
   padding:10px;
   line-height: 1.3;
 }
+/* これは自分で追加した */
+.console span{
+  font-size: 10pt;
+  color : #7195a8;
+  line-height: 1.2;
+}
 
 .pln {
   color: #161b1d;
@@ -37,6 +51,7 @@
 ol.linenums {
   margin-top: 0;
   margin-bottom: 0;
+  padding-left:20px; /* これは自分で追加した */
   color: #7195a8;
 }
 

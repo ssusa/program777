@@ -10,7 +10,7 @@
 
     gtag('config', 'UA-96213629-2');
   </script>
-  <link rel="stylesheet" href="https://fastcdn.org/Lightbox/2.8.1/css/lightbox.css">
+
   <title><%= @page_title %></title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta charset="utf-8" />
@@ -27,22 +27,23 @@
   <meta name="twitter:image" content="<%= @twitter_image_url %>" />
   <meta name="twitter:title" content="<%= @page_title %>" />
   <meta name="twitter:description" content="<%= @description %>" />
-
   <%= csrf_meta_tags %>
   <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://fastcdn.org/Lightbox/2.8.1/css/lightbox.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.css" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <%= stylesheet_link_tag 'application', media: 'all' %>
   <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.js"></script>
   <%= javascript_include_tag 'application' %>
 </head>
 <body>
 <header id="header" style="background-color: #333;color:#fff">
   <div class="container">
-    <h1 id="title">
+    <h1 class="header-title">
       <a href="/" style="color:#fff"><%= @const_site_title %></a>
     </h1>
   </div>
@@ -62,10 +63,10 @@
       <!--PC-->
       <!--PC版で見る-->
       <div class="container">
-        <div style="float:left;width:70%;padding:10px 5px;">
+        <div style="float:left;width:70%;padding:20px 5px;">
           <%= yield %>
         </div>
-        <div style="float:left;width:30%;padding:10px 5px;">
+        <div style="float:left;width:30%;padding:20px 5px;">
           <%= render "layouts/sidemenu" %>
         </div>
       </div>
@@ -92,6 +93,7 @@
     <p>Copyright© program777.com All Rights Reserved.</p>
   </div>
 </footer>
+<script>prettyPrint();</script>
 <script src="https://fastcdn.org/Lightbox/2.8.1/js/lightbox.min.js"></script>
 </body>
 </html>

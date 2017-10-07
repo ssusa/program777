@@ -1,4 +1,4 @@
-<h1 id="page-title"><%= @page_title %></h1>
+<%= render "/articles/article_header" %>
 
 <h2 class="midashi01">railsプロジェクトを作成する</h2>
 <p>
@@ -39,7 +39,6 @@ $ rails new task_kanri
 
 <span class="prettyprint-filename">/Gemfile</span>
 <pre class="prettyprint">
-#coding: utf-8
 source 'https://rubygems.org'
 
 #rails本体
@@ -90,7 +89,7 @@ $ bundle install
 $ rails s
 </pre>
 
-<div class="box">
+<div class="box01">
   <a href="https://www.images.program777.com/201709/20170930_1.jpg" data-lightbox="20170930_1">
     <img src="https://www.images.program777.com/201709/20170930_1.jpg" style="width:100%">
   </a>

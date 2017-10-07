@@ -362,7 +362,6 @@ a.label:focus {
 .label-danger[href]:focus {
   background-color: #c9302c;
 }
-
 .img-responsive{
   vertical-align: middle;
   display: block;
@@ -373,6 +372,7 @@ a.label:focus {
 /* ここまでbootstrap */
 /*-------------------------------------------*/
 
+/* SP */
 @media (max-width: 768px) {
   .container {
     width: 100%;
@@ -382,31 +382,29 @@ a.label:focus {
     /*タップのときに押したように見せる iOSのみ*/
     -webkit-tap-highlight-color: rgba(16, 16, 16, 0.3);
   }
-  h1#title{
+  .header-title{
     font-size:16pt;
     margin:0 10px;
     padding:10px 0;
     font-family: 'Press Start 2P'
   }
-  h1#page-title{
-
-  }
 }
+/* PC */
 @media (min-width: 769px) {
   .container {
     width: 1000px;
     margin: auto;
   }
-  h1#title{
+  .header-title{
     font-size:24pt;
     margin:0;
     padding:10px 0;
     font-family: 'Press Start 2P'
   }
-  h1#page-title{
-    font-size:18pt;
-    border-bottom: solid 3px black;
-  }
+}
+.page-title{
+  font-size:18pt;
+  border-bottom: solid 3px black;
 }
 
 h2.midashi01{
@@ -425,21 +423,6 @@ h3.midashi01{
   background: #eeddee;
   border-left: solid 5px #7db4e6;
 }
-/* 下線 だんだん薄くなる
-h3.midashi02{
-  width:50%;
-  position: relative;
-  padding: 0.25em 0;
-}
-h3.midashi02:after {
-  content: "";
-  display: block;
-  height: 3px;
-  background: -moz-linear-gradient(to right, rgb(230, 90, 90), transparent);
-  background: -webkit-linear-gradient(to right, rgb(230, 90, 90), transparent);
-  background: linear-gradient(to right, rgb(230, 90, 90), transparent);
-}
-*/
 
 /* アイコン */
 h3.midashi02 {
@@ -448,7 +431,6 @@ h3.midashi02 {
   line-height: 1.4;/*行高*/
   margin-bottom: 0;
 }
-
 h3.midashi02:before{
   font-family: FontAwesome;/*忘れずに*/
   content: "\f0a4";/*アイコンのユニコード*/
@@ -483,11 +465,29 @@ table.type01 td {
   padding: 5px;
   border: 1px solid #777;
 }
-.box{
+.box01{
   -webkit-box-shadow: 0px 0px 3px #777777;
   -moz-box-shadow: 0px 0px 3px #777777;
   box-shadow: 0px 0px 3px #777777;
-  padding:3px;
-  padding-bottom:10px;
-  margin-bottom:10px;
+}
+.box02{
+  display:block;
+  margin:20px 20px 20px 0;
+  padding:3px 20px 20px 20px;
+  background:#e5f6ff;
+  color:#1f3134;
+  box-shadow:
+  1px 1px 1px 1px rgba(0,0,0,0.1),
+  10px 10px 0 -5px #e5f6ff,
+  10px 10px 4px -5px rgba(0,0,0,0.3),
+  13px 13px 0 -5px #e5f6ff,
+  13px 13px 8px -5px rgba(0,0,0,0.5),
+  16px 16px 0 -5px #e5f6ff,
+  16px 16px 12px -5px rgba(0,0,0,0.7),
+  19px 19px 0 -5px #e5f6ff,
+  19px 19px 16px -5px rgba(0,0,0,0.9);
+}
+.box02:hover,
+.box02:focus{
+  text-decoration: none;
 }
