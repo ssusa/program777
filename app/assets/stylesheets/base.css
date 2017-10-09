@@ -386,7 +386,7 @@ a.label:focus {
     font-size:16pt;
     margin:0 10px;
     padding:10px 0;
-    font-family: 'Press Start 2P'
+    font-family: "Germania One"
   }
 }
 /* PC */
@@ -399,7 +399,7 @@ a.label:focus {
     font-size:24pt;
     margin:0;
     padding:10px 0;
-    font-family: 'Press Start 2P'
+    font-family: "Germania One"
   }
 }
 .page-title{
@@ -439,6 +439,11 @@ h3.midashi02:before{
   left: 0;/*アイコンの位置*/
   top: 0;/*アイコンの位置*/
   color: #5ab9ff; /*アイコン色*/
+}
+
+
+h3.midashi03 span {
+  border-bottom: double 5px #7db4e6;
 }
 
 table.type01 {

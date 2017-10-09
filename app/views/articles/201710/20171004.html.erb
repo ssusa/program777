@@ -24,12 +24,12 @@ $ rails g model task
   つまり、ここでは<strong>タスク管理アプリとsqliteとのやりとりを簡単に行ってくれるフレームワーク</strong>です。
   また、実テーブルに紐付いているモデルのことを、ActiveRecordともいいます。
 </p>
-<h3 class="midashi02">Modelとは</h3>
+<h3 class="midashi02">モデルとは</h3>
 <p>
-  MVCのMの部分。分かり辛いうちは、単純なクラスと考えてもいいでしょう。
-  railsのルールですが、<strong>モデル名は単数形</strong>です。
-  <strong>モデルがActiveRecordの場合、1つのテーブルにつき、1つのモデルが対応します。</strong>
-  C#をやったことがある人であれば、ActiveRecordが型付DataTableで、ただのModelが型無DataTableと考えればいいでしょう。
+  railsではデータを扱うクラスのことをモデルといいます。
+  それがテーブルに対応するクラスであれば、ActiveRecordですし、対応していなければただのモデル（クラス）です。
+  <strong>ActiveRecordの場合、1つのテーブルにつき、1つのモデルが対応します。</strong>
+  C#をやったことがある人であれば、ActiveRecordが型付DataTableで、ただのモデルが型無DataTableと考えればいいでしょう。
 </p>
 <h3 class="midashi02">rails g modelとは</h3>
 <p>
@@ -118,3 +118,5 @@ irb(main):001:0> Task.all
   railsの環境を読み込んだ状態でrubyコードを実行できるツールです。
   「Task.all」と入力したことでSQL文(select tasks.* from tasks)がActiveRecord経由で発行されました。
 </p>
+
+<%= render "/articles/article_footer" %>

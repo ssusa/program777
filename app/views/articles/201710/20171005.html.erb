@@ -126,21 +126,23 @@ irb(main):001:0> Task.all
 
 <pre class="console" style="overflow-x: scroll;">
 <span>test1にTasksテーブルの一番最初のレコードを代入する</span>
-$> test1 = Task.first
+> test1 = Task.first
 
 <span>id1にtest1のidを代入する</span>
-$> id1 = test1.id
+> id1 = test1.id
 
 <span>idからTasksテーブルを検索する（test1と同じレコードを取得します）</span>
-$> test2 = Task.find(id1)
+> test2 = Task.find(id1)
 
 <span>test2のnameを"rails cのテスト"に変更<br>（これはメモリ上の変更で、Tasksテーブルの値は変わっていません）</span>
-$> test2.name = "rails cのテスト"
+> test2.name = "rails cのテスト"
 
 <span>test2をTasksテーブルに保存する（UPDATE文が発行され、Tasksテーブルの値が変更されます）</span>
-$> test2.save
+> test2.save
 
 <span>Tasksテーブルをもう一度見てみると、nameの値が変更されているはずです</span>
-$> Task.find(id1)
+> Task.find(id1)
 
 </pre>
+
+<%= render "/articles/article_footer" %>

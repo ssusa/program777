@@ -1,0 +1,68 @@
+<%= render "/articles/article_header" %>
+<p>
+  前回までの記事で、タスク管理アプリで使用するテーブルとその中身、それに紐づくActiveRecordが出来上がりました。
+  今回はHTTP通信とRESTとルーティングについて説明します。ルーティングはrailsフレームワークの中でも特に重要な機能ですので、ここは飛ばせません。
+  さらに、ルーティングを理解する上で、HTTP通信の知識は必須ですので、HTTP通信も解説します。
+</p>
+
+<br>
+<h2 class="midashi01">HTTP通信</h2>
+
+<p>
+  HTTP通信とはブラウザとサーバのやりとりに使われるプロトコル（通信手段です）。
+  私達がインターネットを見るときに必ず使用しています。
+</p>
+
+<h3 class="midashi03"><span>①リクエストとレスポンス</span></h3>
+<div class="box01">
+  <a href="https://www.images.program777.com/201710/20171009_1.jpg" data-lightbox="20171009_1">
+    <img src="https://www.images.program777.com/201710/20171009_1.jpg" style="width:100%">
+  </a>
+</div>
+<p>
+  HTTP通信の仕組みはシンプルで、ブラウザがサーバーにリクエストを送り、サーバーがそれに答えてレスポンスを返します。
+  リクエストには送信先のURL、送信元OS、送信元マシンの情報などが記載されています。
+  レスポンスには主にHTMLなど、ブラウザに表示するための情報が含まれています。
+</p>
+
+<h3 class="midashi03"><span>②URL</span></h3>
+<p>
+  https://<span style="font-weight: bold;color:blue">www.program777.com</span>/<span style="font-weight: bold;color:red">articles/201710/20171009</span>
+</p>
+<p>
+  これはこのページのURLです。
+  HTTPのURLは大きく分けて2つに分かれています。青字がサーバー名で、赤字がパスです。
+  railsではこのパスが、そのままファイルパスとなるわけではありません。ルーティングによりファイルパスを選択します。
+</p>
+
+<h3 class="midashi03"><span>③HTTPメソッド</span></h3>
+<p>
+  HTTP通信には送信の種類を分類するHTTPメソッド（GET、POST）というものが用意されています。
+  このHTTPメソッドが、このあと説明するルーティングに大きく関係しています。
+</p>
+
+<div class="box01">
+  <a href="https://www.images.program777.com/201710/20171009_2.jpg" data-lightbox="20171009_2">
+    <img src="https://www.images.program777.com/201710/20171009_2.jpg" style="width:100%">
+  </a>
+</div>
+<p>
+  GETはURLのみでリクエストを送ることができます。ブラウザのアドレスバーに直接URLを入れたり、リンクをクリックしたりして、
+  画面が切りかわった時にはGETメソッドが使用されています。
+  GETの役割は、データの取得です。
+</p>
+<div class="box01">
+  <a href="https://www.images.program777.com/201710/20171009_3.jpg" data-lightbox="20171009_3">
+    <img src="https://www.images.program777.com/201710/20171009_3.jpg" style="width:100%">
+  </a>
+</div>
+<p>
+  POSTはURLに加えて、データも送信します。
+  主に入力フォームがある場合（formタグがある場合）はPOSTメソッドが使用されることがほとんどです。
+  今回作成するタスク管理アプリであれば、登録時や更新時に使用します。
+  POSTの役割は、データの更新です。
+</p>
+
+この記事は途中です。
+
+<%= render "/articles/article_footer" %>

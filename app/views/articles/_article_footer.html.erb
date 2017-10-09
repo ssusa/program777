@@ -1,0 +1,5 @@
+<% if !@next_page_url.index("99999999").present?  %>
+<div style="text-align: right;margin-top:20px;">
+  <a style="text-decoration: underline" href=<%= @next_page_url %>> >>　<%= @next_page_title %></a>
+</div>
+<% end %>
