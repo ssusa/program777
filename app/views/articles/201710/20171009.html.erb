@@ -1,7 +1,7 @@
 <%= render "/articles/article_header" %>
 <p>
   前回までの記事で、タスク管理アプリで使用するテーブルとその中身、それに紐づくActiveRecordが出来上がりました。
-  今回はHTTP通信とRESTとルーティングについて説明します。ルーティングはrailsフレームワークの中でも特に重要な機能ですので、ここは飛ばせません。
+  今回はHTTP通信とルーティングについて説明します。ルーティングはrailsフレームワークの中でも特に重要な機能ですので、ここは飛ばせません。
   さらに、ルーティングを理解する上で、HTTP通信の知識は必須ですので、HTTP通信も解説します。
 </p>
 
@@ -63,6 +63,170 @@
   POSTの役割は、データの更新です。
 </p>
 
-この記事は途中です。
+<br>
+<h2 class="midashi01">ルーティング</h2>
+
+<p>
+  ルートファイルの設定（ルーティングの設定）をします。
+  railsで作られたアプリはこのルートファイルに書いてあるパスしか受け付けません。
+  「/config/routes.rb」ファイルを以下のように書き換えてください。（上のソースだけコピーしてください）
+</p>
+
+<span class="prettyprint-filename">/db/seeds.rb</span>
+<pre class="prettyprint">
+Rails.application.routes.draw do
+  #tasksコントローラーの7つのアクションを作成する
+  resources :tasks do
+    member do
+      #一覧画面 完了ボタン押下時のアクション
+      get "kanryo"
+    end
+  end
+end
+</pre>
+
+
+<span class="prettyprint-filename">/db/seeds.rb</span>
+<pre class="prettyprint">
+#!!!!これは参考のソースです。コピーは上のものだけでOKです。!!!!
+Rails.application.routes.draw do
+
+  #一覧画面 表示のアクション（resoucesの一つ）
+  get    "tasks/index",    to: "tasks#index"
+
+  #照会画面 表示のアクション（resoucesの一つ）
+  get    "tasks/:id",      to: "tasks#show"
+
+  #新規登録画面 表示のアクション（resoucesの一つ）
+  get    "tasks/new",      to: "tasks#new"
+
+  #編集画面 表示のアクション（resoucesの一つ）
+  get    "tasks/:id/edit", to: "tasks#edit"
+
+  #新規登録画面 登録ボタン押下時のアクション（resoucesの一つ）
+  post   "tasks/create",   to: "tasks#create"
+
+  #編集画面 更新ボタン押下時のアクション（resoucesの一つ）
+  put    "tasks/:id",      to: "tasks#update"
+
+  #一覧画面 削除ボタン押下時のアクション（resoucesの一つ）
+  delete "tasks/:id",      to: "tasks#destroy"
+
+  #一覧画面 完了ボタン押下時のアクション
+  get    "kanryo/:id",     to: "tasks#kanryo"
+
+end
+#!!!!これは参考のソースです。コピーは上のものだけでOKです。!!!!
+</pre>
+
+<p>
+  この2つのソースは全く同じことをしています。上のソースは下のソースを簡単に書いたものです。
+  ここで一番重要なのは、上のソースの「resources :tasks」の1行です。
+  これは、後に出てくるTasksコントローラーに、決まった7つのアクションのルートを設定するというものです。
+  単純なマスタ画面の作成では、この7つのアクションを使うことが多いので、開発効率のために、このようなresourcesという書き方が用意されています。
+</p>
+
+<p style="font-weight: bold">
+  「一覧画面 表示のアクション」について説明します。
+</p>
+<span style="font-weight: bold;border: 1px solid #777;padding:2px;margin-left:10px">①get ②"tasks/index", ③to: "tasks#index"</span>
+<ul>
+  <li>①はHTTPメソッドです。</li>
+  <li>②はパス、つまりURLの一部（HTTP通信のURLの説明で書いた赤文字の部分）です。</li>
+  <li>③はアクションです。この場合、Tasksコントローラーのindexアクションです。</li>
+</ul>
+
+<p style="font-weight: bold">
+「編集画面 表示のアクション」について説明します。
+</p>
+<span style="font-weight: bold;border: 1px solid #777;padding:2px;margin-left:10px">get ④"tasks/:id/edit", to: "tasks#edit"</span>
+<ul>
+  <li>②の「:id」の部分はTasksテーブルのキー列であるidが入ります。
+    例えば、「tasks/12/edit」とすると、"Tasksテーブルのid値が12のレコードの編集画面を表示する。" ということになります。
+    このように、URLから何をするかが分かるようなURLの書き方をRESTといいます。
+  </li>
+</ul>
+
+<br>
+<p>
+  ややこしいところですので、表にしておきました。
+</p>
+
+<h3>resourcesのルーティング</h3>
+<table class="type02">
+  <thead>
+  <tr>
+    <th>アクション</th>
+    <th>パス</th>
+    <th>HTTPメソッド</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>index</td>
+    <td>/tasks</td>
+    <td>GET</td>
+  </tr>
+  <tr>
+    <td>show</td>
+    <td>/tasks/:id</td>
+    <td>GET</td>
+  </tr>
+  <tr>
+    <td>new</td>
+    <td>/tasks/new</td>
+    <td>GET</td>
+  </tr>
+  <tr>
+    <td>edit</td>
+    <td>/tasks/:id/edit</td>
+    <td>GET</td>
+  </tr>
+  <tr>
+    <td>create</td>
+    <td>/tasks</td>
+    <td>POST</td>
+  </tr>
+  <tr>
+    <td>update</td>
+    <td>/tasks/:id</td>
+    <td>PUT</td>
+  </tr>
+  <tr>
+    <td>destroy</td>
+    <td>/tasks/:id</td>
+    <td>DELETE</td>
+  </tr>
+  </tbody>
+</table>
+
+<h3 class="midashi02">HTTPメソッドのput、deleteとは</h3>
+<p>
+  現在のブラウザはPUTメソッドとDELETEメソッドには対応しておらず、HTMLの仕様ではフォームのmethod属性にはGETとPOSTしか指定できません。
+  このため、ルートファイルにput、deleteなどと書いても、実際にはPOSTメソッドで送信されます。
+</p>
+<p>
+  実はGemFileのこの行でインストールされるjsファイルが帳尻をあわせてくれていて、ルートファイルにputと書いた場合、
+  実際はPOSTメソッドを使用していますが、あたかもPUTメソッドを使用したかのように見せてくれています。
+</p>
+
+<span class="prettyprint-filename">/Gemfile</span>
+<pre class="prettyprint">
+#httpメソッドの置き換えを行ってくれる
+gem 'rails-ujs', '= 0.1.0'
+</pre>
+
+<br>
+<h2 class="midashi01">ルーティングの確認</h2>
+
+<p>
+  task_kanriディレクトリで以下のコマンドを実行してください。
+  task_kanriの全てのルーティングが表示されます。タスク管理アプリではこれ以外の形式のパスは受け付けません。
+  「rails db:seed」としても同じです。
+</p>
+
+<pre class="console">
+$ rake routes
+</pre>
 
 <%= render "/articles/article_footer" %>

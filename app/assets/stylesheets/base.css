@@ -470,6 +470,25 @@ table.type01 td {
   padding: 5px;
   border: 1px solid #777;
 }
+
+table.type02 {
+  border-collapse: collapse;
+  text-align: center;
+  line-height: 1.5;
+  border: 2px solid #777;
+}
+table.type02 thead th {
+  padding: 5px;
+  background: #bbb;
+  color: #fff;
+  font-weight: normal;
+  border: 1px solid #777;
+}
+table.type02 td {
+  padding: 5px;
+  border: 1px solid #777;
+}
+
 .box01{
   -webkit-box-shadow: 0px 0px 3px #777777;
   -moz-box-shadow: 0px 0px 3px #777777;
