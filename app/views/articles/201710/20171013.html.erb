@@ -1,0 +1,167 @@
+<%= render "/articles/article_header" %>
+<p>
+  ルーティングの設定が終わりましたので、今回は、コントローラーとアクションを作成します。
+  <strong>コントローラーはDBから値を取得したり、画面の表示するHTMLを決定します。</strong>
+</p>
+
+<br>
+<h2 class="midashi01">コントローラーの作成</h2>
+
+<p>
+  コントローラーの作成はコマンドで行います。
+  task_kanriディレクトリで以下のコマンドを実行してください。コントローラーと対応するViewのフォルダが作成されます。
+  最後が複数形の「tasks」となっていますので、注意してください。以前のコマンドで作成したモデルの名前は単数形でした→「rails g model task」。
+  <strong>コントローラーの名前が複数形で、モデル名を単数形にするのは、railsの決まりです。</strong>
+</p>
+
+<pre class="console">
+$ rails g controller tasks
+</pre>
+
+<p>
+  コントローラーが出来上がったら、「/app/controllers/tasks_controller.rb」に以下のソースをコピーペーストしてください。
+</p>
+
+<span class="prettyprint-filename">/app/controllers/tasks_controller.rb</span>
+<pre class="prettyprint">
+class TasksController < ApplicationController
+
+  #一覧画面 表示のアクション
+  def index
+
+  end
+
+  #照会画面 表示のアクション
+  def show
+
+  end
+
+  #新規登録画面 表示のアクション
+  def new
+
+  end
+
+  #編集画面 表示のアクション
+  def edit
+
+  end
+
+  #新規登録画面 登録ボタン押下時のアクション
+  def create
+
+  end
+
+  #編集画面 更新ボタン押下時のアクション
+  def update
+
+  end
+
+  #一覧画面 削除ボタン押下時のアクション
+  def destroy
+
+  end
+
+  #一覧画面 完了ボタン押下時のアクション
+  def kanryo
+
+  end
+end
+</pre>
+
+<p>
+  アクションの名前のみが書かれたコントローラーができました。
+  注目すべきは、<strong>ルーティングで設定したアクションが全てここに書かれている</strong>ことです。
+</p>
+<p>
+  くどいかもしれませんが、以下は前回説明したものと同じで、ルーティングのresourcesを分解したものです。
+  右側のto: "tasks#index"などの部分が、「コントローラ名#アクション名」となっていることがわかります。
+</p>
+<span class="prettyprint-filename">/config/routes.rb</span>
+<pre class="prettyprint">
+#!!!!これは参考のソースです。コピーは上のものだけでOKです。!!!!
+get    "tasks/index",    to: "tasks#index"
+get    "tasks/:id",      to: "tasks#show"
+get    "tasks/new",      to: "tasks#new"
+get    "tasks/:id/edit", to: "tasks#edit"
+post   "tasks/create",   to: "tasks#create"
+put    "tasks/:id",      to: "tasks#update"
+delete "tasks/:id",      to: "tasks#destroy"
+get    "kanryo/:id",     to: "tasks#kanryo"
+#!!!!これは参考のソースです。コピーは上のものだけでOKです。!!!!
+</pre>
+
+<br>
+<h2 class="midashi01">VIEWの作成</h2>
+
+<p>
+  VIEWの作成は手動で行います。フォルダは先程のコマンドで作成されています。
+  今回使用するVIEWは5つですので、まとめて作成しておきます。
+  「/app/views/tasks」ディレクトリに以下のファイルを作成してください。
+</p>
+<ul>
+  <li>「index.html.erb」ファイル（一覧画面のHTML）</li>
+  <li>「show.html.erb」ファイル（照会画面のHTML）</li>
+  <li>「new.html.erb」ファイル（新規登録画面のHTML）</li>
+  <li>「edit.html.erb」ファイル（編集画面のHTML）</li>
+  <li>「_form.html.erb」ファイル（新規登録画面、編集画面で使用するテンプレートファイル）</li>
+</ul>
+
+<p>
+  コントローラーの上から4つのアクションがそれぞれのHTMLに対応しています。
+  名前は別のものにしても問題ありませんが、<strong>同じ名前にしておくことで、アクションの中でHTMLを呼び出さなくても、
+  自動でアクション名と同じHTMLファイルを出力してくれます。</strong>ここではこの名前で作成しておいてください。
+</p>
+<p>
+  一番下の「_form.html.erb」はテンプレートファイルと呼ばれます。
+  テンプレートファイルは必ずアンダーバーから始まります。複数のVIEWで共通して使いたいHTMLを書くときに使用します。
+  タスク管理アプリでは、新規登録画面と編集画面の入力項目が一緒なので、そこをテンプレートファイルにしています。
+</p>
+
+<p>
+  拡張子「.html.erb」はRubyコードが組み込まれたHTMLファイルです。
+  値の代入やrubyのコードを書くことができます。あとでまた出てきますので、
+  ここでは、rubyのコードが書けるHTMLファイルということだけ覚えておけばいいでしょう。
+</p>
+
+<p style="font-weight: bold">
+  値の代入の書き方（普通、表示する文字列を書きます）
+</p>
+
+<p>
+  &lt;%= 値 %&gt;<br>
+</p>
+
+<p style="font-weight: bold">
+  rubyのコードの書き方（if文、for文なども何でも書けます）
+</p>
+
+<p>
+&lt;% rubyのコード %&gt;
+</p>
+
+<br>
+<h2 class="midashi01">動作確認</h2>
+
+<p>
+  動作確認をします。以前と同じように、「rails s」でサーバーを起動して、以下の5つのurlにアクセスしてみてください。
+  すべてのurlで真っ白な画面が開けばOKです。
+</p>
+
+<pre class="console">
+$ rails s
+</pre>
+
+<ul>
+  <li>http://localhost:3000<br>
+    →index.html.erbが表示される（ルーティングでルートディレクトリを「tasks#index」としたため）<br><br></li>
+  <li>http://localhost:3000/tasks/index<br>
+    →index.html.erbが表示される<br><br></li>
+  <li>http://localhost:3000/tasks/1<br>
+    →show.html.erbが表示される<br><br></li>
+  <li>http://localhost:3000/tasks/new<br>
+    →new.html.erbが表示される<br><br></li>
+  <li>http://localhost:3000/tasks/1/edit<br>
+    →edit.html.erbが表示される</li>
+</ul>
+
+<%= render "/articles/article_footer" %>

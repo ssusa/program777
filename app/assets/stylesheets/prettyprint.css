@@ -27,7 +27,6 @@ prettify.js
   font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
   border: 2px solid #dbe8ef;
 }
-
 /* これは自分で追加した */
 .console{
   font-size: 11pt;
@@ -41,6 +40,15 @@ prettify.js
   font-size: 10pt;
   color : #7195a8;
   line-height: 1.2;
+}
+
+.sankou{
+  ont-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
+  font-size: 9pt;
+  background: #eee;
+  color : #555;
+  padding:10px;
+  line-height: 1.3;
 }
 
 .pln {

@@ -15,36 +15,17 @@
           タスク管理のサンプル
         </li>
       </a>
-      <a href="/articles/201709/20170926" class="list-group-item" style="padding:3px;">
-        <li style="display:inline-block;margin:8px">
-          1.事前準備
-        </li>
-      </a>
-      <a href="/articles/201709/20170927" class="list-group-item" style="padding:3px;">
-        <li style="display:inline-block;margin:8px">
-          2.作成するアプリの仕様
-        </li>
-      </a>
-      <a href="/articles/201709/20170930" class="list-group-item" style="padding:3px;">
-        <li style="display:inline-block;margin:8px">
-          3.railsプロジェクト作成
-        </li>
-      </a>
-      <a href="/articles/201710/20171004" class="list-group-item" style="padding:3px;">
-        <li style="display:inline-block;margin:8px">
-          4.データベース作成
-        </li>
-      </a>
-      <a href="/articles/201710/20171005" class="list-group-item" style="padding:3px;">
-        <li style="display:inline-block;margin:8px">
-          5.テストデータ作成
-        </li>
-      </a>
-      <a href="/articles/201710/20171009" class="list-group-item" style="padding:3px;">
-        <li style="display:inline-block;margin:8px">
-          6.ルーティングの設定
-        </li>
-      </a>
+      <% Const::TK_YMD.each_with_index do |ymd, index| %>
+        <% sidemenu_href = "/articles/" + Const::TK_YMD[index][0..5] + "/" + Const::TK_YMD[index] %>
+        <% sidemenu_text = (index+1).to_s + ". " + Const::TK_TITLE2[index] %>
+        <% if Const::TK_YMD[index] != "99999999" %>
+          <a href=<%= sidemenu_href %> class="list-group-item" style="padding:3px;">
+            <li style="display:inline-block;margin:8px">
+              <%= sidemenu_text %>
+            </li>
+          </a>
+        <% end %>
+      <% end %>
     </ul>
   </div>
 </div>

@@ -2,9 +2,9 @@
 <div class="waku">
   <%= form_for @task do |f| %>
     <%= render "form", f: f %>
-    <div class="row well" style="margin:20px 0 0 0">
+    <div class="row well" style="margin:20px 0 0 0;padding:10px;">
       <div class="col-sm-12">
-        <%= link_to "キャンセル", samples_task_kanri_tasks_path, class:"btn btn-default", style:"float:left" %>
+        <%= link_to "キャンセル", samples_task_kanri_tasks_path, class:"btn btn-default", style:"float:left;" %>
         <%= f.submit "編集する", class:"btn btn-primary", style:"float:right" %>
       </div>
     </div>

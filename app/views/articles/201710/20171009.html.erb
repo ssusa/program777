@@ -73,9 +73,11 @@
   「/config/routes.rb」ファイルを以下のように書き換えてください。（上のソースだけコピーしてください）
 </p>
 
-<span class="prettyprint-filename">/db/seeds.rb</span>
+<span class="prettyprint-filename">/config/routes.rb</span>
 <pre class="prettyprint">
 Rails.application.routes.draw do
+  #アプリケーションのルートディレクトリのページを決定
+  root to: "tasks#index"
   #tasksコントローラーの7つのアクションを作成する
   resources :tasks do
     member do
@@ -87,10 +89,13 @@ end
 </pre>
 
 
-<span class="prettyprint-filename">/db/seeds.rb</span>
+<span class="prettyprint-filename">/config/routes.rb</span>
 <pre class="prettyprint">
 #!!!!これは参考のソースです。コピーは上のものだけでOKです。!!!!
 Rails.application.routes.draw do
+
+  #アプリケーションのルートディレクトリのページを決定
+  root to: "tasks#index"
 
   #一覧画面 表示のアクション（resoucesの一つ）
   get    "tasks/index",    to: "tasks#index"
@@ -223,7 +228,7 @@ gem 'rails-ujs', '= 0.1.0'
 <p>
   task_kanriディレクトリで以下のコマンドを実行してください。
   task_kanriの全てのルーティングが表示されます。タスク管理アプリではこれ以外の形式のパスは受け付けません。
-  「rails db:seed」としても同じです。
+  「rails routes」としても同じです。
 </p>
 
 <pre class="console">

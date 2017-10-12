@@ -75,6 +75,19 @@ end
 $ bundle install
 </pre>
 
+<br>
+<h2 class="midashi01">application.jsを書き換える</h2>
+<p>
+  デフォルトで作成される「/app/assets/javascripts/application.js」ファイルに書かれている「//= require turbolinks」の1行を消してください。
+  turbolinksは今回は使用しません。
+</p>
+
+<span class="prettyprint-filename">/app/assets/javascripts/application.js</span>
+<pre class="prettyprint">
+//= require rails-ujs
+//= require turbolinks  ← この1行を消す
+//= require_tree .
+</pre>
 
 <br>
 <h2 class="midashi01">サンプルページを表示する</h2>
@@ -97,7 +110,7 @@ $ rails s
 
 <p>
   <strong>「rails s」で以下のようなエラーメッセージが表示され、サーバーが起動できない場合</strong>は
-  task_kanri/config/application.rbの中にある「config.load_defaults 5.1」をコメントしてください。<br>
+  「task_kanri/config/application.rb」ファイルの「config.load_defaults 5.1」をコメント、または削除してください。<br>
   エラーメッセージ → 〜〜/lib/rails/railtie/configuration.rb:95:in `method_missing': undefined method `load_defaults' for〜〜
 </p>
 
