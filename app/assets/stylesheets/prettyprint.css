@@ -20,6 +20,7 @@ prettify.js
 
 /* これは自分で追加した */
 .prettyprint-filename{
+  font-size: 9pt;
   padding:3px;
   background: #dbe8ef;
   border-radius: 5px 5px 0 0;
@@ -40,15 +41,6 @@ prettify.js
   font-size: 10pt;
   color : #7195a8;
   line-height: 1.2;
-}
-
-.sankou{
-  ont-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
-  font-size: 9pt;
-  background: #eee;
-  color : #555;
-  padding:10px;
-  line-height: 1.3;
 }
 
 .pln {
