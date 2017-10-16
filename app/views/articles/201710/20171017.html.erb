@@ -86,7 +86,7 @@ end
         &lt;td class="pc-only"&gt;&lt;%= @grid_no.to_s %&gt;&lt;/td&gt;
         &lt;td style="vertical-align: middle"&gt;&lt;%= task.name %&gt;&lt;/td&gt;
         &lt;td style="vertical-align: middle"&gt;&lt;%= kigen_format(task.kigen) %&gt;&lt;/td&gt;
-        &lt;td style="vertical-align: middle"&gt;&lt;%= sample_task_kanri_kanryo_tag(task) %&gt;&lt;/td&gt;
+        &lt;td style="vertical-align: middle"&gt;&lt;%= kanryo_tag(task) %&gt;&lt;/td&gt;
         &lt;td class="henshu-cell"&gt;
 
         &lt;/td&gt;
@@ -111,16 +111,20 @@ end
 <pre class="prettyprint linenums">
 module TasksHelper
 
-  def sample_task_kanri_kanryo_tag(task)
+  #タスクが完了している場合、"済"を表字する
+  #タスクが未完了の場合、完了ボタンを表字する
+  def kanryo_tag(task)
     result = ""
     if task.kanryo == true
       result = '済'
     else
       result = '&lt;a class="btn btn-sm btn-primary" href="' + kanryo_samples_task_kanri_task_path(task) + '"&gt;完了&lt;/a&gt;'
     end
+    #文字列をそのままhtmlタグとして出力
     result.html_safe
   end
 
+  #期限（日付型）をYYYY/MM/DD形式の文字列で表示する
   def kigen_format(kigen)
     result = ""
     if kigen.present?
