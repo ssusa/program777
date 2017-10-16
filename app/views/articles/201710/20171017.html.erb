@@ -1,6 +1,133 @@
 <%= render "/articles/article_header" %>
 <p>
-  前回までの記事で、コントローラー、VIEW、モデルそれぞれのファイルが作成し終わって、
-  画面も真っ白ですが、URLから任意のページへ飛ばすことができるようになりました。
-  さらにテストデータも既に登録済みです。
-  今回は「Application.html.erb」ファイルを作成します。
+  今回から一覧画面を作成します。
+  一覧画面はタスク管理アプリの中で一番ボリュームが多い画面なので、
+  2回に分けました。
+  今回はデータの取得、表示をします。
+  念のため、前回までで終わっていることを以下に記載しておきました。
+</p>
+
+<p style="font-weight: bold">
+  前回までの内容
+</p>
+<ul>
+  <li>コントローラ、VIEW、モデルのそれぞれのファイルを作成</li>
+  <li>画面のレイアウトが完成（ヘッダー、フッター）</li>
+  <li>ルーティングの設定が完了（URLから任意のページへ飛ばすことができる）</li>
+  <li>データベース、テストデータ登録済み</li>
+</ul>
+
+<br>
+<h2 class="midashi01">データ取得</h2>
+
+<p>
+この記事は途中です。
+</p>
+
+<span class="prettyprint-filename">/app/controllers/tasks_controller.rb</span>
+<pre class="prettyprint linenums">
+#一覧画面 表示のアクション
+def index
+
+  #データの取得
+  @tasks = Task
+    .by_kanryo(params[:kanryo])
+    .paginate(page: params[:page], per_page: 5).order('kanryo asc, kigen asc')
+
+  #No列の開始No
+  @grid_no = 1
+
+  #params[:page]がNullまたは空ではない場合
+  if params[:page].present?
+    #開始No = ページ × ページングサイズ
+    @grid_no = (params[:page].to_i - 1) * 5 + 1
+  end
+
+end
+</pre>
+
+<span class="prettyprint-filename">/app/models/task.rb</span>
+<pre class="prettyprint linenums">
+class Task < ApplicationRecord
+
+  #kanryo（文字列）の値がある場合、絞込みを行う
+  scope :by_kanryo, ->(kanryo){
+    if kanryo.present?
+      #bool型の変数
+      kanryo_bool = true
+      if kanryo == "true"
+        kanryo_bool = true
+      else
+        kanryo_bool = false
+      end
+      where('kanryo = ?', kanryo_bool)
+    end
+  }
+
+end
+</pre>
+
+<span class="prettyprint-filename">/app/views/tasks.index.html.erb</span>
+<pre class="prettyprint linenums">
+&lt;h2&gt;一覧画面&lt;/h2&gt;
+&lt;table class="table table-bordered"&gt;
+  &lt;thead&gt;
+  &lt;tr&gt;
+    &lt;th class="grid-th-width1 pc-only"&gt;No&lt;/th&gt;
+    &lt;th class="grid-th-width2"&gt;タスク&lt;/th&gt;
+    &lt;th class="grid-th-width3"&gt;期限&lt;/th&gt;
+    &lt;th class="grid-th-width4"&gt;ｽﾃｰﾀｽ&lt;/th&gt;
+    &lt;th class="grid-th-width5"&gt;編集&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+  &lt;% @tasks.each do |task| %&gt;
+      &lt;tr style="height:48px;"&gt;
+        &lt;td class="pc-only"&gt;&lt;%= @grid_no.to_s %&gt;&lt;/td&gt;
+        &lt;td style="vertical-align: middle"&gt;&lt;%= task.name %&gt;&lt;/td&gt;
+        &lt;td style="vertical-align: middle"&gt;&lt;%= kigen_format(task.kigen) %&gt;&lt;/td&gt;
+        &lt;td style="vertical-align: middle"&gt;&lt;%= sample_task_kanri_kanryo_tag(task) %&gt;&lt;/td&gt;
+        &lt;td class="henshu-cell"&gt;
+
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;% @grid_no = @grid_no + 1 %&gt;
+  &lt;% end %&gt;
+  &lt;tbody&gt;
+  &lt;/table&gt;
+&lt;div style="text-align: center"&gt;
+  &lt;%= will_paginate @tasks,
+                    renderer: BootstrapPagination::Rails,
+                    previous_label: "前へ",
+                    next_label: "次へ",
+                    inner_window: 1,
+                    outer_window: 0,
+                    class:"pagination-sm"
+  %&gt;
+&lt;/div&gt;
+</pre>
+
+<span class="prettyprint-filename">/app/helpers/tasks_helper.rb</span>
+<pre class="prettyprint linenums">
+module TasksHelper
+
+  def sample_task_kanri_kanryo_tag(task)
+    result = ""
+    if task.kanryo == true
+      result = '済'
+    else
+      result = '&lt;a class="btn btn-sm btn-primary" href="' + kanryo_samples_task_kanri_task_path(task) + '"&gt;完了&lt;/a&gt;'
+    end
+    result.html_safe
+  end
+
+  def kigen_format(kigen)
+    result = ""
+    if kigen.present?
+      result = kigen.strftime("%Y/%m/%d")
+    end
+    result
+  end
+
+end
+</pre>
