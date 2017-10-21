@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   namespace :others do
     get "about"
+    get "link"
     get "toiawase"
     post "toiawase_send_mail"
   end

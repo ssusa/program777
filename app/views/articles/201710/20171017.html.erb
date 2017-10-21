@@ -171,16 +171,16 @@ end
 </pre>
 
 <p>
-  13行目〜24行目まではループになっています。<br>
-  &lt;% 〜 %&gt;の中はrubyのコードが書けます。
+  13行目〜24行目まではループになっています。
+  <strong style="color:red;text-decoration: underline">&lt;% 〜 %&gt;の中はrubyのコードが書けます。</strong>
   「@tasks.each do |task|」は@tasks（ActiveRecord配列）を1レコードずつ変数taskに格納してループするという意味です。
   つまり、@tasksの数分グリッドの行を作成して内容を表示しています。
   このループは24行目の&lt;% end %&gt;までです。
 </p>
 
 <p>
-  16行目のtask.nameはtask（ActiveRecord）のnameカラムを表示する書き方です。<br>
-  &lt;%= 〜 %&gt;は変数の値などを表示する時に使用します。
+  16行目のtask.nameはtask（ActiveRecord）のnameカラムを表示する書き方です。
+  <strong style="color:red;text-decoration: underline">&lt;%= 〜 %&gt;は変数の値などを表示する時に使用します。</strong>
 </p>
 
 <p>
@@ -241,7 +241,7 @@ end
 
 <p>
   kanryo_tagメソッドはコメントにも書きましたが、タスクのステータスにより、ボタンと文字列を分けて表示するメソッドです。
-  10行目のkanryo_task_path(task)はtasks_controllerのkanryoアクションに飛ばすURLを生成してくれます。
+  10行目の<strong>kanryo_task_path(task)はtasks_controllerのkanryoアクションに飛ばすURLを生成してくれます</strong>。
 </p>
 
 <p>
