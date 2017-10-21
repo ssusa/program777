@@ -10,6 +10,7 @@
 <p style="font-weight: bold">
   前回までの内容
 </p>
+
 <ul>
   <li>コントローラ、VIEW、モデルのそれぞれのファイルを作成</li>
   <li>画面のレイアウトが完成（ヘッダー、フッター）</li>
@@ -17,12 +18,16 @@
   <li>データベース、テストデータ登録済み</li>
 </ul>
 
-<br>
-<h2 class="midashi01">データ取得</h2>
-
 <p>
-この記事は途中です。
+一覧の表示には4ファイルを修正します。
+それぞれ解説しますが、
+<strong>難しい場合はコントローラーからTaskモデルを経由してデータを取得し、
+VIEWに表示しているという流れがわかればOKです。</strong>
+一度完成させたあとにソースを見直すと、頭に入りやすいかと思います。
 </p>
+
+<br>
+<h2 class="midashi01">①tasks_controller.rb編集</h2>
 
 <span class="prettyprint-filename">/app/controllers/tasks_controller.rb</span>
 <pre class="prettyprint linenums">
@@ -32,7 +37,8 @@ def index
   #データの取得
   @tasks = Task
     .by_kanryo(params[:kanryo])
-    .paginate(page: params[:page], per_page: 5).order('kanryo asc, kigen asc')
+    .paginate(page: params[:page], per_page: 5)
+    .order('kanryo asc, kigen asc')
 
   #No列の開始No
   @grid_no = 1
@@ -46,11 +52,52 @@ def index
 end
 </pre>
 
+<p>
+  5行目〜8行目でデータの取得を行っています。
+</p>
+<p>
+  5行目の@taskは変数です。@から始まる変数はインスタンス変数と呼ばれます。
+  取得したActiveRecord配列を格納するための変数で、このインスタンス変数はVIEWで使用することができます。
+</p>
+<p>
+  6行目はTaskモデルのby_kanryoスコープを呼び出しています。
+  params[:kanryo]の値を渡しています。ここには「nil」か「"true"」か「"false"」が入ってきます。
+</p>
+<p>
+  7行目はページネーションを使用するときの書き方です。
+  簡単にページングが出来るということだけ覚えておいてください。
+  will_paginateというgemの機能で、<a style="text-decoration: underline" href="/articles/201709/20170930">この記事</a>でGemFileに書いて「bundle install」したものです。
+</p>
+<p>
+  8行目でソートしています。
+</p>
+<p>
+  この<strong>5行目から8行目の実行タイミングでby_kanryoスコープの絞り込み、ページネーション、ソートを考慮したSQLが発行されます</strong>。
+</p>
+<p>
+  11行目以降はグリッドの1列目の開始Noを取得しています。Noはただの飾りみたいなものですので、今回は説明しません。
+</p>
+
+<h3 class="midashi02">スコープとは</h3>
+<p>
+  SQL文をメソッドのようにいくつも結合させて使えます。
+  複数の検索条件がある場合、「条件Aは入れるけど、条件Bは入れない」みたいなときに使うと便利です。
+</p>
+
+<h3 class="midashi02">paramsとは</h3>
+<p>
+  リクエストにより、URLから送られてきた値（GET）やフォームで入力した値（POST）が格納されているものです。
+  paramsに入ってくるのはrailsの仕様です。params[:パラメータ名]で取得することができます。
+</p>
+
+<br>
+<h2 class="midashi01">②task.rb（モデル）</h2>
+
 <span class="prettyprint-filename">/app/models/task.rb</span>
 <pre class="prettyprint linenums">
 class Task < ApplicationRecord
 
-  #kanryo（文字列）の値がある場合、絞込みを行う
+  #kanryo（文字列）の値がある場合、絞り込みを行う
   scope :by_kanryo, ->(kanryo){
     if kanryo.present?
       #bool型の変数
@@ -67,7 +114,23 @@ class Task < ApplicationRecord
 end
 </pre>
 
-<span class="prettyprint-filename">/app/views/tasks.index.html.erb</span>
+<p>
+  スコープは取得したデータ、ここではTasksテーブルの全行から絞り込みを行います。
+</p>
+
+<p>
+  5行目のkanryo.present?はkanryoが「nil」か「空文字」ではないときにtrueとなります。
+  非常によく使用するメソッドです。
+</p>
+
+<p>
+  13行目のwhereのところで、取得に使用するSQL文に条件式を追加しています。
+</p>
+
+<br>
+<h2 class="midashi01">③index.html.erb</h2>
+
+<span class="prettyprint-filename">/app/views/tasks/index.html.erb</span>
 <pre class="prettyprint linenums">
 &lt;h2&gt;一覧画面&lt;/h2&gt;
 &lt;table class="table table-bordered"&gt;
@@ -107,6 +170,46 @@ end
 &lt;/div&gt;
 </pre>
 
+<p>
+  13行目〜24行目まではループになっています。<br>
+  &lt;% 〜 %&gt;の中はrubyのコードが書けます。
+  「@tasks.each do |task|」は@tasks（ActiveRecord配列）を1レコードずつ変数taskに格納してループするという意味です。
+  つまり、@tasksの数分グリッドの行を作成して内容を表示しています。
+  このループは24行目の&lt;% end %&gt;までです。
+</p>
+
+<p>
+  16行目のtask.nameはtask（ActiveRecord）のnameカラムを表示する書き方です。<br>
+  &lt;%= 〜 %&gt;は変数の値などを表示する時に使用します。
+</p>
+
+<p>
+  17行目のkigen_formatはこのあと説明する自作のヘルパーメソッドです。
+  task.kigenは日付型ですので、文字列のYYYY/MM/DD型に変換しています。
+</p>
+
+<p>
+  18行目のkanryo_tagも自作のヘルパーメソッドです。
+  タスクが未完了の場合、完了ボタンを表示させ、未完了の場合、"済"の文字列を表示するメソッドです。
+</p>
+
+<p>
+  27行目〜35行目はのwill_paginateを使用する場合のお決まりの書き方です。
+  コントローラーと同じで、簡単にページングが出来るということだけ覚えておいてください。
+</p>
+
+<h3 class="midashi02">ヘルパーメソッドとは</h3>
+<p>
+  HTMLにrubyのコードをたくさん書くと可読性が悪くなってしまうので、それを防ぐ目的で用意されています。
+  ヘルパーメソッドには予め用意されているものと、自作のものがあります。自作のものは
+  「rails g controller tasks」でコントローラー作成したときに一緒に作成されています。
+  機能的には普通のrubyのクラスですので、なんでも書くことが出来ますが、
+  動的にHTMLタグを生成したり、表示用に形式を整えるなど、HTMLの表示に関わる処理を書くのがいいでしょう。
+</p>
+
+<br>
+<h2 class="midashi01">④tasks_helper.rb</h2>
+
 <span class="prettyprint-filename">/app/helpers/tasks_helper.rb</span>
 <pre class="prettyprint linenums">
 module TasksHelper
@@ -118,7 +221,7 @@ module TasksHelper
     if task.kanryo == true
       result = '済'
     else
-      result = '&lt;a class="btn btn-sm btn-primary" href="' + kanryo_samples_task_kanri_task_path(task) + '"&gt;完了&lt;/a&gt;'
+      result = '&lt;a class="btn btn-sm btn-primary" href="' + kanryo_task_path(task) + '"&gt;完了&lt;/a&gt;'
     end
     #文字列をそのままhtmlタグとして出力
     result.html_safe
@@ -135,3 +238,72 @@ module TasksHelper
 
 end
 </pre>
+
+<p>
+  kanryo_tagメソッドはコメントにも書きましたが、タスクのステータスにより、ボタンと文字列を分けて表示するメソッドです。
+  10行目のkanryo_task_path(task)はtasks_controllerのkanryoアクションに飛ばすURLを生成してくれます。
+</p>
+
+<p>
+  13行目のhtml_safeは、「この文字列は安全なものだからHTMLタグとしてそのまま出力します。」という書き方です。
+  この1行を書かない場合、タグがただの文字列として出力されてしまいます。
+</p>
+
+<p>
+  20行目のkigen.strftime("%Y/%m/%d")は日付型から文字列へ変換するときにフォーマットを決めて出力するやり方です。
+  「"%Y/%m/%d"」はYYYY/MM/DD形式になります。
+</p>
+
+<br>
+<h2 class="midashi01">動作確認</h2>
+
+<p>
+  「rails s」でサーバーを起動して、「localhost:3000」にアクセスします。
+  以下のようにグリッドが表示された画面が表示されればOKです。
+  ページングは出来ていますが、完了ボタンを押しても処理を書いていないので何も起こりません。
+</p>
+
+<div class="box01">
+  <a href="https://www.images.program777.com/201710/20171017_1.jpg" data-lightbox="20171017_1">
+    <img src="https://www.images.program777.com/201710/20171017_1.jpg" style="width:100%">
+  </a>
+</div>
+
+<br><br>
+<h2 class="midashi01">railsコンソールでリンクパスを確認しよう！</h2>
+
+<p>
+  余裕のある人は、ヘルパーメソッドで出てきたkanryo_task_path(task)が実際どのような値になっているか、
+  railsコンソールで確認してみましょう。
+  「rake routes」の左側に書いてあるものに「_path」と付けることでパスを生成することができます。
+</p>
+
+<div class="box01">
+  <a href="https://www.images.program777.com/201710/20171017_2.jpg" data-lightbox="20171017_2">
+    <img src="https://www.images.program777.com/201710/20171017_2.jpg" style="width:100%">
+  </a>
+</div>
+
+<pre class="console" style="overflow-x: scroll;">
+<span>test1にTasksテーブルの一番最初のレコードを代入する</span>
+> test1 = Task.first
+
+<span>id1にtest1のidを代入する</span>
+> id1 = test1.id
+
+<span>完了のパスを取得（引数にidを渡しています）</span>
+<span>※「app.」とすることでURLヘルパーを呼び出せます</span>
+> app.kanryo_task_path(id1)
+
+<span>完了のパスを取得（上と同じ結果ですが、引数にActiveRecordを渡しています）</span>
+> app.kanryo_task_path(test1)
+
+<span>新規登録用のパスを取得</span>
+> app.new_task_path
+
+<span>照会画面用のパスを取得</span>
+> app.task_path(test1)
+
+</pre>
+
+<%= render "/articles/article_footer" %>
