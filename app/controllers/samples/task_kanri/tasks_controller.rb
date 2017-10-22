@@ -3,7 +3,7 @@ class Samples::TaskKanri::TasksController < ApplicationController
 
   layout "/samples/task_kanri/application"
 
-  #リスト表示
+  #一覧画面 表示のアクション
   def index
     @tasks = SamplesTaskKanriTask
               .by_kanryo(params[:kanryo])
@@ -15,12 +15,34 @@ class Samples::TaskKanri::TasksController < ApplicationController
     end
   end
 
-  #新規フォーム表示
+  #照会画面 表示のアクション
+  def show
+    begin
+      @task = SamplesTaskKanriTask.find(params[:id])
+      render "show"
+    rescue ActiveRecord::RecordNotFound
+      redirect_to samples_task_kanri_tasks_path
+    end
+  end
+
+  #新規登録画面 表示のアクション
   def new
     @task = SamplesTaskKanriTask.new
   end
 
-  #新規データ作成
+  #編集画面 表示のアクション
+  def edit
+    begin
+      @task = SamplesTaskKanriTask.find(params[:id])
+      if @task.kigen.present?
+        @task.kigen_str = @task.kigen.strftime("%Y%m%d")
+      end
+    rescue ActiveRecord::RecordNotFound
+      redirect_to samples_task_kanri_tasks_path
+    end
+  end
+
+  #新規登録画面 登録ボタン押下時のアクション
   def create
     @task = SamplesTaskKanriTask.new(task_params)
     if @task.valid?
@@ -40,19 +62,7 @@ class Samples::TaskKanri::TasksController < ApplicationController
     end
   end
 
-  #編集フォーム表示
-  def edit
-    begin
-      @task = SamplesTaskKanriTask.find(params[:id])
-      if @task.kigen.present?
-        @task.kigen_str = @task.kigen.strftime("%Y%m%d")
-      end
-    rescue ActiveRecord::RecordNotFound
-      redirect_to samples_task_kanri_tasks_path
-    end
-  end
-
-  #編集データ更新
+  #編集画面 更新ボタン押下時のアクション
   def update
     @task = SamplesTaskKanriTask.find(params[:id])
     @task.assign_attributes(task_params)
@@ -72,17 +82,7 @@ class Samples::TaskKanri::TasksController < ApplicationController
     end
   end
 
-  #データ表示
-  def show
-    begin
-      @task = SamplesTaskKanriTask.find(params[:id])
-      render "show"
-    rescue ActiveRecord::RecordNotFound
-      redirect_to samples_task_kanri_tasks_path
-    end
-  end
-
-  #データ削除
+  #一覧画面 削除ボタン押下時のアクション
   def destroy
     @task = SamplesTaskKanriTask.find(params[:id])
     @task.destroy
@@ -90,7 +90,7 @@ class Samples::TaskKanri::TasksController < ApplicationController
     redirect_to request.referer
   end
 
-  #完了
+  #一覧画面 完了ボタン押下時のアクション
   def kanryo
     @task = SamplesTaskKanriTask.find(params[:id])
     @task.kanryo = true
