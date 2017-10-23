@@ -1,10 +1,65 @@
 <%= render "/articles/article_header" %>
 <p>
   前回は一覧画面の表示とページングが出来るようになりました。
-  今回は各ボタンの実装をします。
+  今回は前回実装していない、各ボタンの処理を実装します。
+  <strong>各ボタンのリンク先（どのアクションに飛ぶのか、どのHTMLを出力するのか）を理解することがポイントです。</strong>
+  <strong>また、リンクのHTTPメソッド、パラメータ（クエリストリング）にも注目してみてください。</strong>
+</p>
+<p>
+  ボタンとアクションの表を作りましたので、ルーティングやソースと照らし合わせたり、
+  「ページのソースを表示」などで実際のHTMLを確認してください。
+  画面のリンクからルーティングで設定されたアクションへ飛ばされていることが理解できればOKです。
 </p>
 
-！！！！！記事は未完成です。！！！！！
+<h3>一覧画面のリンク（ボタン）と対応しているアクション</h3>
+<table class="type02">
+  <thead>
+  <tr>
+    <th>ボタン</th>
+    <th>アクション</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>全て表示リンク</td>
+    <td>index</td>
+  </tr>
+  <tr>
+    <td>完了のみリンク</td>
+    <td>index</td>
+  </tr>
+  <tr>
+    <td>未完了のみリンク</td>
+    <td>index</td>
+  </tr>
+  <tr>
+    <td>ページングのリンク</td>
+    <td>index</td>
+  </tr>
+  <tr>
+    <td>タスクを登録リンク</td>
+    <td>new</td>
+  </tr>
+  <tr>
+    <td>完了ボタン</td>
+    <td>kanryo</td>
+  </tr>
+  <tr>
+    <td>照会リンク</td>
+    <td>show</td>
+  </tr>
+  <tr>
+    <td>編集リンク</td>
+    <td>edit</td>
+  </tr>
+  <tr>
+    <td>削除リンク</td>
+    <td>destroy</td>
+  </tr>
+  </tbody>
+</table>
+
+<p>※ページングのリンクはソースからは判断できませんが出来上がるHTMLを見るとindexのURLが書かれています</p>
 
 <br>
 <h2 class="midashi01">①tasks_controller.rb編集</h2>
@@ -45,6 +100,21 @@
 
   end
 </pre>
+
+<p>
+  5行目はお決まりの書き方でparams[:id]のデータを1件取得するという処理です。
+  次のaタグは削除リンクのものですが、params[:id]には、この35などの数字が入ります。
+</p>
+<span style="font-weight: bold;border: 1px solid #777;padding:2px;">
+  &lt;a data-method="delete" href="/tasks/<span style="color: red;font-weight: bold">35</span>"&gt;削除&lt;/a&gt;
+</span>（削除リンクのHTMLタグ）
+
+<p>
+  8行目のdestroyはActiveRecordのインスタンスメソッドで、DELETE文を発行します。
+  つまり、上で取得したデータをデータベースのテーブルから物理削除します。
+</p>
+
+!!!!!!!!!!!記事の途中です。!!!!!!!!!!!!!
 
 <br>
 <h2 class="midashi01">②index.html.erb</h2>
