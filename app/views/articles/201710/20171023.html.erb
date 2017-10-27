@@ -105,16 +105,32 @@
   5行目はお決まりの書き方でparams[:id]のデータを1件取得するという処理です。
   次のaタグは削除リンクのものですが、params[:id]には、この35などの数字が入ります。
 </p>
-<span style="font-weight: bold;border: 1px solid #777;padding:2px;">
+
+<span style="font-weight: bold;border: 1px solid #777;padding:2px;margin-left:10px">
   &lt;a data-method="delete" href="/tasks/<span style="color: red;font-weight: bold">35</span>"&gt;削除&lt;/a&gt;
-</span>（削除リンクのHTMLタグ）
+</span>
+（削除リンクのHTMLタグ）
 
 <p>
   8行目のdestroyはActiveRecordのインスタンスメソッドで、DELETE文を発行します。
   つまり、上で取得したデータをデータベースのテーブルから物理削除します。
 </p>
 
-!!!!!!!!!!!記事の途中です。!!!!!!!!!!!!!
+<p>
+  11行目のflash[:msg]は1回のリクエストのみ有効なセッションです。
+  flashは、更新メッセージを表示するためにあります。
+</p>
+
+<p>
+  14行目のリダイレクトとは、サーバーからもう一度リクエストを発生させることで、
+  呼び出し元の一覧画面を再描画しています。ブラウザのアドレスバーに一覧画面のURLを入れているのと同じです。
+</p>
+
+<p>
+  28行目のsaveもdestroyと同じくActiveRecordのインスタンスメソッドです。
+  @taskのidがDBに存在する場合はUPDATE文が発行され、idがnilの場合はINSERT文が発行されます。
+  ここでは22行目のfindでparams[:id]からレコードを取得していますので、そのidのレコードのUPDATEが行われます。
+</p>
 
 <br>
 <h2 class="midashi01">②index.html.erb</h2>
@@ -168,6 +184,83 @@
   %&gt;
 &lt;/div&gt;
 </pre>
+
+<p>
+  index.html.erbには、前回作成したファイルにリンク部分を追加しました。
+  追加部分は2行目〜7行目と、26行目〜30行目です。
+  link_to〜はaタグを生成するためのrailsのヘルパークラスです。
+</p>
+
+<p>
+  3行目〜5行目のtasks_pathはtasks_controllerのindexアクションに飛ばすURLです。aタグのhrefにあたる部分です。
+  4行目と5行目の「tasks_path + "kanryo=true"」はURLにパラメータを渡しています。
+  実際に出来上がるパスはこのようになります。
+</p>
+
+<span style="font-weight: bold;border: 1px solid #777;padding:2px;margin-left:10px">
+  http://localhost:3000/tasks<span style="color: red;font-weight: bold">?kanryo=true</span>
+</span>
+
+<p>
+  赤字の部分はコントローラ内ではparams[:kanryo]とすることで値を取得することができます。
+  また、この<strong>?マークから始まる部分をクエリストリングといいます。</strong>
+</p>
+
+<p>
+  6行目のnew_task_pathも同様にtasks_controllerのnewアクションに飛ばすURLを生成しています。
+</p>
+
+<p>
+  27行目〜29行目はtask_path(<span style="color:red">task</span>)のようにモデルを引数に渡しています。
+  モデルにはidがあるため、生成されるURLはid付きのものになります。
+  27行目と29行目は同じtask_path(task)ですが、削除のほうはmethod:"delete"となっており、
+  HTTPメソッドによりアクションが分岐されるので、27行目はshowアクションを、29行目はdestroyアクションを呼び出すURLが生成されます。
+  余裕のある人は<a style="text-decoration: underline" href="/articles/201710/20171009">この記事</a>のルーティングとも比較してみてください。
+</p>
+
+<h3>一覧画面のリンク（ボタン）と生成されるURL</h3>
+<table class="type02">
+  <thead>
+  <tr>
+    <th>ボタン</th>
+    <th>URL</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>全て表示リンク</td>
+    <td>/tasks</td>
+  </tr>
+  <tr>
+    <td>完了のみリンク</td>
+    <td>/tasks?kanryo=true</td>
+  </tr>
+  <tr>
+    <td>未完了のみリンク</td>
+    <td>/tasks?kanryo=false</td>
+  </tr>
+  <tr>
+    <td>タスクを登録リンク</td>
+    <td>/tasks/new</td>
+  </tr>
+  <tr>
+    <td>完了ボタン</td>
+    <td>/tasks/35/kanryo</td>
+  </tr>
+  <tr>
+    <td>照会リンク</td>
+    <td>/task/35</td>
+  </tr>
+  <tr>
+    <td>編集リンク</td>
+    <td>/task/35/edit</td>
+  </tr>
+  <tr>
+    <td>削除リンク</td>
+    <td>/task/35/destroy</td>
+  </tr>
+  </tbody>
+</table>
 
 <br>
 <h2 class="midashi01">application.html.erb</h2>
@@ -296,5 +389,27 @@
 &lt;/body&gt;
 &lt;/html&gt;
 </pre>
+
+<p>
+  apprication.html.erbは、cssとflashにメッセージがあった場合に表示するhtmlを追加しました。
+  cssは最低限のレスポンシブを考慮してあります。
+  全てをコピーペーストするだけでOKです。
+</p>
+
+<br>
+<h2 class="midashi01">動作確認</h2>
+
+<p>
+  「rails s」でサーバーを起動して、「localhost:3000」にアクセスします。
+  以下のような画面が表示されればOKです。
+  各リンクを押下してみてください。タスクを登録リンクと、照会リンク、編集リンクはページ遷移だけですが、
+  それ以外のリンク、ボタンの処理は完了しています。レスポンシブも対応済みなので、携帯でも問題なく見れます。
+</p>
+
+<div class="box01">
+  <a href="https://www.images.program777.com/201710/20171023_1.jpg" data-lightbox="20171023_1">
+    <img src="https://www.images.program777.com/201710/20171023_1.jpg" style="width:100%">
+  </a>
+</div>
 
 <%= render "/articles/article_footer" %>
