@@ -1,0 +1,74 @@
+<%= render "/articles/article_header" %>
+<p>
+  照会画面は表示するだけの簡単な画面で、2ファイルだけ修正します。
+  この画面はあまり説明する部分がありません（一覧画面でほぼ説明済み）ので、
+  コピー&ペーストで仕上げてしまってもOKです。
+</p>
+
+<br>
+<h2 class="midashi01">①tasks_controller.rb編集</h2>
+
+<span class="prettyprint-filename">/app/controllers/tasks_controller.rb</span>
+<pre class="prettyprint">
+  #照会画面 表示のアクション
+  def show
+    @task = Task.find(params[:id])
+    render "show"
+  end
+</pre>
+
+<p>
+  一覧画面の照会ボタンからここが呼ばれる仕組みを整理できていればいいと思います。
+</p>
+
+<h2 class="midashi01">②show.html.erb</h2>
+
+<span class="prettyprint-filename">/app/views/tasks/show.html.erb</span>
+<pre class="prettyprint linenums">
+&lt;h2&gt;照会画面&lt;/h2&gt;
+&lt;div class="waku"&gt;
+  &lt;table class="table table-bordered" style="table-layout: fixed;"&gt;
+    &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th style="width:20%;"&gt;タスク&lt;/th&gt;
+      &lt;td style="width:80%;"&gt;&lt;%= @task.name %&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;詳細&lt;/th&gt;
+      &lt;td&gt;&lt;%= @task.shosai %&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;期限&lt;/th&gt;
+      &lt;td&gt;&lt;%= kigen_format(@task.kigen) %&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tbody&gt;
+  &lt;/table&gt;
+  &lt;div class="row well" style="margin:20px 0 0 0"&gt;
+    &lt;div class="col-sm-12"&gt;
+      &lt;%= link_to "戻る", tasks_path, class:"btn btn-default", style:"width:150px;display:block;margin:auto" %&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+<p>
+  一覧のリンクにあるidのレコードが@taskに入っていることとTasksテーブルの値を表示していること。
+  tasks_pathはTasksコントローラーのindexアクション用のaタグが生成されていることなどが理解できてれいればOKです。
+</p>
+
+
+<br>
+<h2 class="midashi01">動作確認</h2>
+
+<p>
+  「rails s」でサーバーを起動して、「localhost:3000」にアクセスし一覧画面を開きます。
+  一覧画面から照会リンクを押下して、照会画面に遷移すればOKです。
+</p>
+
+<div class="box01">
+  <a href="https://www.images.program777.com/201710/20171031_1.jpg" data-lightbox="20171031_1">
+    <img src="https://www.images.program777.com/201710/20171031_1.jpg" style="width:100%">
+  </a>
+</div>
+
+<%= render "/articles/article_footer" %>
