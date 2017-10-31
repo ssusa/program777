@@ -10,17 +10,23 @@
 
 <span class="prettyprint-filename">/app/controllers/tasks_controller.rb</span>
 <pre class="prettyprint">
-  #照会画面 表示のアクション
-  def show
-    @task = Task.find(params[:id])
-    render "show"
-  end
+#照会画面 表示のアクション
+def show
+
+  #idでタスクテーブルを取得
+  @task = Task.find(params[:id])
+
+  #viewを表示（省略可）
+  render "show"
+
+end
 </pre>
 
 <p>
   一覧画面の照会ボタンからここが呼ばれる仕組みを整理できていればいいと思います。
 </p>
 
+<br>
 <h2 class="midashi01">②show.html.erb</h2>
 
 <span class="prettyprint-filename">/app/views/tasks/show.html.erb</span>
@@ -55,7 +61,6 @@
   一覧のリンクにあるidのレコードが@taskに入っていることとTasksテーブルの値を表示していること。
   tasks_pathはTasksコントローラーのindexアクション用のaタグが生成されていることなどが理解できてれいればOKです。
 </p>
-
 
 <br>
 <h2 class="midashi01">動作確認</h2>

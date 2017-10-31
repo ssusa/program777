@@ -1,0 +1,155 @@
+<%= render "/articles/article_header" %>
+<p>
+  新規登録画面は内容が多いので、2回に分けて説明します。
+  1回目で新規登録画面の表示、更新のみできるようにして、2回目でエラーチェック、エラー表示、期限のカレンダー表示を行います。
+  今回はformタグでPOSTしますので、重要なところです。
+</p>
+
+この記事は未完成です。
+
+<br>
+<h2 class="midashi01">①tasks_controller.rb編集</h2>
+
+<span class="prettyprint-filename">/app/controllers/tasks_controller.rb</span>
+<pre class="prettyprint linenums">
+︙
+
+#新規登録画面 表示のアクション
+def new
+
+  #タスクテーブルのスキーマでモデル（ActiveRecord）を作成
+  @task = Task.new
+
+  #viewを表示（省略可）
+  render "new"
+
+end
+
+︙
+
+#新規登録画面 登録ボタン押下時のアクション
+def create
+
+  #POSTされた値を元にタスクテーブル登録用レコードを作成
+  @task = Task.new(task_params)
+
+  #エラーチェック
+  if @task.valid?
+    #--------------
+    #エラーがない場合
+    #--------------
+    if @task.kigen_str.present?
+      @task.kigen = Date.new(
+        @task.kigen_str[0..3].to_i,
+        @task.kigen_str[4..5].to_i,
+        @task.kigen_str[6..7].to_i)
+    end
+    @task.kanryo = false
+
+    #更新（エラーチェックを行わない）
+    @task.save(validate:false)
+
+    #フラッシュ（一度きりのセッション）にメッセージを格納
+    flash[:msg] = "登録しました。"
+
+    #一覧画面へリダイレクト
+    redirect_to tasks_path
+  else
+    #--------------
+    #エラー時
+    #--------------
+    #登録画面のviewを再表示
+    render "new"
+  end
+
+end
+
+︙
+
+  #呼び出し元URLへリダイレクト
+  redirect_to request.referer ← これはコピーしないでください。
+
+end ← これはコピーしないでください。
+
+#------------------------------------------------------------------------------
+private
+#------------------------------------------------------------------------------
+
+#ストロングパラメータ（マスアサインメント脆弱性回避）
+def task_params
+  params.require(:task).permit(
+    :name,
+    :shosai,
+    :kigen_str
+  )
+end
+</pre>
+
+<br>
+<h2 class="midashi01">②task.rb（モデル）</h2>
+<span class="prettyprint-filename">/app/models/task.rb</span>
+<pre class="prettyprint linenums">
+class Task < ApplicationRecord
+
+  #期限のアクセサー（画面入力用）
+  attr_accessor :kigen_str
+
+  ︙
+</pre>
+
+<br>
+<h2 class="midashi01">③new.html.erb</h2>
+
+<span class="prettyprint-filename">/app/views/tasks/new.html.erb</span>
+<pre class="prettyprint linenums">
+&lt;h2&gt;新規画面&lt;/h2&gt;
+&lt;div class="waku"&gt;
+  &lt;%= form_for @task do |f| %&gt;
+      &lt;%= render "form", f: f %&gt;
+      &lt;div class="row well" style="margin:20px 0 0 0;padding:10px;"&gt;
+        &lt;div class="col-sm-12"&gt;
+          &lt;%= link_to "キャンセル", tasks_path, class:"btn btn-default", style:"float:left" %&gt;
+          &lt;%= f.submit "登録する", class:"btn btn-primary", style:"float:right" %&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+  &lt;% end %&gt;
+&lt;/div&gt;
+</pre>
+
+<br>
+<h2 class="midashi01">④_form.html.erb</h2>
+
+<span class="prettyprint-filename">/app/views/tasks/_form.html.erb</span>
+<pre class="prettyprint linenums">
+タスク
+  &lt;%= f.text_field :name, class:"form-control" %&gt;
+  &lt;br&gt;
+タスク詳細
+  &lt;%= f.text_area :shosai, class:"form-control" %&gt;
+  &lt;br&gt;
+期限
+  &lt;%= f.text_field :kigen_str, class:"form-control", style:"width:100px;" %&gt;
+</pre>
+
+<br>
+<h2 class="midashi01">動作確認</h2>
+
+<p>
+  「rails s」でサーバーを起動して、「localhost:3000」にアクセスし一覧画面を開きます。
+  一覧画面から照会リンクを押下して、照会画面に遷移すればOKです。
+</p>
+
+<div class="box01">
+  <a href="https://www.images.program777.com/201711/20171101_1.jpg" data-lightbox="20171011_1">
+    <img src="https://www.images.program777.com/201711/20171101_1.jpg" style="width:100%">
+  </a>
+</div>
+
+<div class="box01">
+  <a href="https://www.images.program777.com/201711/20171101_2.jpg" data-lightbox="20171011_2">
+    <img src="https://www.images.program777.com/201711/20171101_2.jpg" style="width:100%">
+  </a>
+</div>
+
+
+<%= render "/articles/article_footer" %>

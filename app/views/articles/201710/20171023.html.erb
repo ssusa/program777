@@ -118,7 +118,7 @@
 
 <p>
   11行目のflash[:msg]は1回のリクエストのみ有効なセッションです。
-  flashは、更新メッセージを表示するためにあります。
+  flashは、更新メッセージを表示するためにあります。（メッセージ表示は新規登録画面実装時に記載します）
 </p>
 
 <p>
@@ -343,9 +343,17 @@
       }
     }
   &lt;/style&gt;
-&lt;!-- 一覧画面の作成②で追加 ここまで --&gt;
 &lt;/head&gt;
 &lt;body&gt;
+&lt;script&gt;
+  $(function() {
+    if ($(".alert").length)
+    {
+      $(".alert").show();
+    }
+  });
+&lt;/script&gt;
+&lt;!-- 一覧画面の作成②で追加 ここまで --&gt;
 &lt;header id="header" style="background-color: #333;color:#fff"&gt;
   &lt;div class="container"&gt;
     &lt;div class="row"&gt;
@@ -391,7 +399,7 @@
 </pre>
 
 <p>
-  apprication.html.erbは、cssとflashにメッセージがあった場合に表示するhtmlを追加しました。
+  apprication.html.erbは、cssとflashにメッセージがあった場合に表示するjavascript、htmlを追加しました。
   cssは最低限のレスポンシブを考慮してあります。
   全てをコピー&ペーストするだけでOKです。
 </p>
