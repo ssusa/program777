@@ -68,9 +68,9 @@
 
 <p>
   ルートファイルの設定（ルーティングの設定）をします。
-  <strong style="color:red;text-decoration: underline">ルーティングとは、URLからコントローラーのアクションを選択することです。</strong>
+  <strong class="red">ルーティングとは、URLからコントローラーのアクションを選択することです。</strong>
   railsで作られたアプリはこのルートファイルに書いてあるパスしか受け付けません。
-  「/config/routes.rb」ファイルを以下のように書き換えてください。（上のソースだけコピーしてください）
+  「/config/routes.rb」ファイルを以下のように書き換えて下さい。（上のソースだけコピーして下さい）
 </p>
 
 <span class="prettyprint-filename">/config/routes.rb</span>
@@ -103,13 +103,13 @@ Rails.application.routes.draw do
   #照会画面 表示のアクション（resoucesの一つ）
   get    "tasks/:id",      to: "tasks#show"
 
-  #新規登録画面 表示のアクション（resoucesの一つ）
+  #登録画面 表示のアクション（resoucesの一つ）
   get    "tasks/new",      to: "tasks#new"
 
   #編集画面 表示のアクション（resoucesの一つ）
   get    "tasks/:id/edit", to: "tasks#edit"
 
-  #新規登録画面 登録ボタン押下時のアクション（resoucesの一つ）
+  #登録画面 登録ボタン押下時のアクション（resoucesの一つ）
   post   "tasks/create",   to: "tasks#create"
 
   #編集画面 更新ボタン押下時のアクション（resoucesの一つ）
@@ -226,7 +226,7 @@ gem 'rails-ujs', '= 0.1.0'
 <h2 class="midashi01">ルーティングの確認</h2>
 
 <p>
-  task_kanriディレクトリで以下のコマンドを実行してください。
+  task_kanriディレクトリで以下のコマンドを実行して下さい。
   task_kanriの全てのルーティングが表示されます。タスク管理アプリではこれ以外の形式のパスは受け付けません。
   「rails routes」としても同じです。
 </p>

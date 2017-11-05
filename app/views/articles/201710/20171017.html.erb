@@ -12,7 +12,7 @@
 </p>
 
 <ul>
-  <li>コントローラ、VIEW、モデルのそれぞれのファイルを作成</li>
+  <li>コントローラー、VIEW、モデルのそれぞれのファイルを作成</li>
   <li>画面のレイアウトが完成（ヘッダー、フッター）</li>
   <li>ルーティングの設定が完了（URLから任意のページへ飛ばすことができる）</li>
   <li>データベース、テストデータ登録済み</li>
@@ -65,7 +65,7 @@ end
 </p>
 <p>
   7行目はページネーションを使用するときの書き方です。
-  簡単にページングが出来るということだけ覚えておいてください。
+  簡単にページングが出来るということだけ覚えておいて下さい。
   will_paginateというgemの機能で、<a style="text-decoration: underline" href="/articles/201709/20170930">この記事</a>でGemFileに書いて「bundle install」したものです。
 </p>
 <p>
@@ -172,7 +172,7 @@ end
 
 <p>
   13行目〜24行目まではループになっています。
-  <strong style="color:red;text-decoration: underline">&lt;% 〜 %&gt;の中はrubyのコードが書けます。</strong>
+  <strong class="red">&lt;% 〜 %&gt;の中はrubyのコードが書けます。</strong>
   「@tasks.each do |task|」は@tasks（ActiveRecord配列）を1レコードずつ変数taskに格納してループするという意味です。
   つまり、@tasksの数分グリッドの行を作成して内容を表示しています。
   このループは24行目の&lt;% end %&gt;までです。
@@ -180,7 +180,7 @@ end
 
 <p>
   16行目のtask.nameはtask（ActiveRecord）のnameカラムを表示する書き方です。
-  <strong style="color:red;text-decoration: underline">&lt;%= 〜 %&gt;は変数の値などを表示する時に使用します。</strong>
+  <strong class="red">&lt;%= 〜 %&gt;は変数の値などを表示する時に使用します。</strong>
 </p>
 
 <p>
@@ -195,7 +195,7 @@ end
 
 <p>
   27行目〜35行目はのwill_paginateを使用する場合のお決まりの書き方です。
-  コントローラーと同じで、簡単にページングが出来るということだけ覚えておいてください。
+  コントローラーと同じで、簡単にページングが出来るということだけ覚えておいて下さい。
 </p>
 
 <h3 class="midashi02">ヘルパーメソッドとは</h3>
@@ -223,7 +223,7 @@ module TasksHelper
     else
       result = '&lt;a class="btn btn-sm btn-primary" href="' + kanryo_task_path(task) + '"&gt;完了&lt;/a&gt;'
     end
-    #文字列をそのままhtmlタグとして出力
+    #文字列をそのままHTMLタグとして出力
     result.html_safe
   end
 
@@ -298,7 +298,7 @@ end
 <span>完了のパスを取得（上と同じ結果ですが、引数にActiveRecordを渡しています）</span>
 > app.kanryo_task_path(test1)
 
-<span>新規登録用のパスを取得</span>
+<span>登録画面用のパスを取得</span>
 > app.new_task_path
 
 <span>照会画面用のパスを取得</span>

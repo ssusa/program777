@@ -517,3 +517,8 @@ table.type02 td {
 .box02:focus{
   text-decoration: none;
 }
+
+strong.red{
+  color:red;
+  text-decoration: underline;
+}

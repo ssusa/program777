@@ -3,7 +3,7 @@
   <strong>「application.html.erb」ファイルは全ページで共通して使うHTMLファイル</strong>です。
   タスク管理アプリは、ヘッダーとフッターしか共通部分はありません。
   難しい場合は<strong>&lt;%= yield %&gt;</strong>の使い方だけ覚えておけばOKです。
-  各タグの説明も簡単に説明していますので、余裕のある人は読んでみてください。
+  各タグの説明も簡単に説明していますので、余裕のある人は読んでみて下さい。
 </p>
 
 <br>
@@ -12,7 +12,7 @@
 <p>
   <strong>railsではcssやjsの読み込みはどのページでも全css、全jsを読み込む方式</strong>がとられていますので、
   css、jsの読み込みもここに記載します。
-  「/app/views/layouts/application.html.erb」の中身を以下のソースですべて置き換えてください。
+  「/app/views/layouts/application.html.erb」の中身を以下のソースですべて置き換えて下さい。
   下で1行ずつ説明します。
 </p>
 
@@ -90,7 +90,7 @@
 </p>
 <p>
   8行目の&lt;csrf_meta_tags&gt;はrailsがデフォルトで設定してくれる脆弱性対策です。今回は内容を覚える必要はありません。
-  これはrubyのコードでerbからhtmlへ変換されるときに、metaタグに変換されます。
+  これはrubyのコードでerbからHTMLへ変換されるときに、metaタグに変換されます。
 </p>
 
 <h3 class="midashi03"><span>linkタグ</span></h3>
@@ -102,7 +102,7 @@
 </p>
 <p>
   11行目はrailsプロジェクトにある、application.cssファイルをダウンロードしています。
-  これもrubyのコードでerbからhtmlへ変換されるときに、application.cssが参照している全てのcssがlinkタグに変換されます。
+  これもrubyのコードでerbからHTMLへ変換されるときに、application.cssが参照している全てのcssがlinkタグに変換されます。
 </p>
 
 <h3 class="midashi03"><span>scriptタグ</span></h3>
@@ -114,7 +114,7 @@
 </p>
 <p>
   14行目はrailsプロジェクトにある、application.jsファイルをダウンロードしています。
-  これもrubyのコードでerbからhtmlへ変換されるときに、application.jsが参照している全てのjsがscriptタグに変換されます。
+  これもrubyのコードでerbからHTMLへ変換されるときに、application.jsが参照している全てのjsがscriptタグに変換されます。
 </p>
 
 <h3 class="midashi02">cdnとは</h3>
@@ -137,7 +137,7 @@ CDNを利用すると、近くのキャッシュサーバーからダウンロ�
 </p>
 <p>
   <strong>32行目の&lt;%= yield %&gt;が非常に重要で、
-  ここにそれぞれの画面（index.html.erbやnew.html.erb）のhtmlが入ります。</strong>
+  ここにそれぞれの画面（index.html.erbやnew.html.erb）のHTMLが入ります。</strong>
 </p>
 
 <h3 class="midashi03"><span>footerタグ</span></h3>

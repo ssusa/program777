@@ -1,11 +1,9 @@
 <%= render "/articles/article_header" %>
 <p>
-  新規登録画面は内容が多いので、2回に分けて説明します。
-  1回目で新規登録画面の表示、更新のみできるようにして、2回目でエラーチェック、エラー表示、期限のカレンダー表示を行います。
+  登録画面は内容が多いので、2回に分けて説明します。
+  1回目で登録画面の表示、更新のみできるようにして、2回目でエラーチェック、エラー表示、期限のカレンダー表示を行います。
   今回はformタグでPOSTしますので、重要なところです。
 </p>
-
-この記事は未完成です。
 
 <br>
 <h2 class="midashi01">①tasks_controller.rb編集</h2>
@@ -14,10 +12,10 @@
 <pre class="prettyprint linenums">
 ︙
 
-#新規登録画面 表示のアクション
+#登録画面 表示のアクション
 def new
 
-  #タスクテーブルのスキーマでモデル（ActiveRecord）を作成
+  #Tasksテーブルのスキーマでモデル（ActiveRecord）を作成
   @task = Task.new
 
   #viewを表示（省略可）
@@ -27,10 +25,10 @@ end
 
 ︙
 
-#新規登録画面 登録ボタン押下時のアクション
+#登録画面 登録ボタン押下時のアクション
 def create
 
-  #POSTされた値を元にタスクテーブル登録用レコードを作成
+  #POSTされた値を元にTasksテーブル登録用レコードを作成
   @task = Task.new(task_params)
 
   #エラーチェック
@@ -67,9 +65,9 @@ end
 ︙
 
   #呼び出し元URLへリダイレクト
-  redirect_to request.referer ← これはコピーしないでください。
+  redirect_to request.referer ← これはコピーしないで下さい。
 
-end ← これはコピーしないでください。
+end ← これはコピーしないで下さい。
 
 #------------------------------------------------------------------------------
 private
@@ -85,6 +83,49 @@ def task_params
 end
 </pre>
 
+<p>
+  3行目〜12行目のnewアクションはコメントに書いてあるとおりで、
+  Tasksテーブルの空のスキーマを取得して、登録画面用のviewを表示します。
+</p>
+
+<p>
+  16行目〜51行目のcreateアクションは画面から入力されて、POSTされた値をチェックして、
+  エラーがなければデータベースに登録する処理です。
+</p>
+<p>
+  19行目はストロングパラメータと呼ばれるrails4からの特殊な書き方です。下の64行目のtask_paramsメソッドを呼び出し、
+  <strong>POSTされたパラメータの中に不正なものが含まれていないかチェック</strong>しています。
+</p>
+
+<p>
+  23行目の@task.valid?はPOSTされた値の中身をチェックし、エラーがなければtrueを返すrailsのメソッドです。
+  エラーチェック自体は内容はモデルに書きますが、ここではエラーがなければtrueになると覚えておけばいいでしょう。
+  @task.valid?がtrueの場合、36行目で実際にデータベースへの更新を行い一覧画面へ戻ります。
+  エラーの場合は再度、登録画面を表示し、エラーを表示します。これはcreateアクションの一般的な書き方です。
+</p>
+
+<h3 class="midashi02">マスアサインメント脆弱性とは</h3>
+<p>
+  formタグの入力エリアにスクリプトタグである記述をすると、
+  管理者が本来変更されたくないデータベースの値が更新されてしまうことです。
+</p>
+
+<h3 class="midashi02">ストロングパラメータとは</h3>
+<p>
+  マスアサインメント脆弱性を回避するためのrailsの機能です。
+  更新可能なカラムを予め決めておき、それ以外のカラムが追加、変更されていた場合
+  （例えばtokenやuser_idなど、本来画面から入力できないものが不正に追加、変更された場合）
+  エラーを出す仕組みです。
+</p>
+<p>
+  タスク管理アプリでは、タスク名称、タスク詳細、期限のみがユーザーが入力できる項目であるため、
+  それ以外のカラムであるidやステータスが変更された場合はエラーとなります。
+</p>
+<p>
+  ストロングパラメータはrails4から導入されたものであり、rails3ではモデルにattr_accessibleでカラムを指定することで、
+  マスアサインメント脆弱性を回避することができました。
+</p>
+
 <br>
 <h2 class="midashi01">②task.rb（モデル）</h2>
 <span class="prettyprint-filename">/app/models/task.rb</span>
@@ -97,12 +138,18 @@ class Task < ApplicationRecord
   ︙
 </pre>
 
+<p>
+  Taskモデルにはこの1行だけ追加して下さい。
+  attr_accessor属性に書いたカラムは、実際はテーブルに属していないカラムを、モデル内で使用できるようになります。
+  kigenカラムは日付型ですが、画面表示、入力時は文字列として処理したいために文字列型の期限を定義しているということです。
+</p>
+
 <br>
 <h2 class="midashi01">③new.html.erb</h2>
 
 <span class="prettyprint-filename">/app/views/tasks/new.html.erb</span>
 <pre class="prettyprint linenums">
-&lt;h2&gt;新規画面&lt;/h2&gt;
+&lt;h2&gt;登録画面&lt;/h2&gt;
 &lt;div class="waku"&gt;
   &lt;%= form_for @task do |f| %&gt;
       &lt;%= render "form", f: f %&gt;
@@ -115,6 +162,43 @@ class Task < ApplicationRecord
   &lt;% end %&gt;
 &lt;/div&gt;
 </pre>
+
+<p>
+  3行目の&lt;%= form_for @task do |f| %&gt;はformタグの生成をしています。これはお決まりの書き方です。
+  @taskにはコントローラーで取得した空のTaskモデルのスキーマが入っています。
+  |f|の「f」はテキストボックスなどの入力フォームとモデルのカラムの紐付けを行うための変数です。
+  難しいところですので、ここでは、こういう書き方をしたらformタグが出来上がると覚えておけばいいと思います。
+</p>
+
+<p>
+  4行目の&lt;%= render "form", f: f %&gt;はテンプレートファイル「_form.html.erb」を表示しています。
+  テンプレートファイルは共通して使いたいコントロール郡がある場合に使用します。
+  登録画面と編集画面は同じ入力項目のため、テンプレートファイルと作成しておいたので、それを表示しています。
+  「f: f」はテンプレートファイルに引数を渡しています。
+</p>
+
+<p>
+  8行目のf.submitは送信ボタンを作成しており、以下のinputタグ（送信ボタン）を生成します。<br>
+  &lt;input type="submit" name="commit" value="登録する" … /&gt;
+</p>
+
+<h3 class="midashi02">formタグとは</h3>
+<p>
+  <strong>formタグはユーザーから入力された情報をサーバーに送信するためのタグで、
+  送信先のURLとHTTPメソッドを設定します。</strong>
+  <strong class="red">普通、formタグ内には入力コントロール、submit（送信ボタン）を配置して、
+  submitすること（送信ボタンを押下すること）で、formタグ内にある全ての入力コントロールがサーバーへ送信されます。</strong>
+</p>
+
+<h3 class="midashi02">form_forとは</h3>
+<p>
+  railsのヘルパーメソッドである<strong>form_forは、formタグを作成</strong>してくれます。
+  form_forは引数にモデルを取ります。
+  モデルが空の場合はnewアクションから出力されたHTMLなので、送信先のURLはcreateアクションとなります。
+  値があるモデルの場合はeditアクションから出力されたHTMLなので、送信先のURLはupdateアクションとなります。
+  HTTPメソッドは両方ともPOSTです。
+  自動でrailsが判断してくれますので、タスク管理アプリのような単純な画面であればform_for(@task)と1行書くだけでOKです。
+</p>
 
 <br>
 <h2 class="midashi01">④_form.html.erb</h2>
@@ -131,12 +215,31 @@ class Task < ApplicationRecord
   &lt;%= f.text_field :kigen_str, class:"form-control", style:"width:100px;" %&gt;
 </pre>
 
+<p>
+  「f」は「new.html.erb」ファイルから受け取った引数ですので、@taskです。
+  それぞれ出来上がるタグを書きました。分かりづらいかもしれませんが、<strong>name属性が"モデル名[カラム名]"となってます。</strong>
+  このようにrailsが自動でname属性を作るため、この値がPOSTされたときに簡単にコントローラーで取得することができます。
+</p>
+
+<ul>
+  <li>&lt;%= f.text_field :name, class:"form-control" %&gt;<br>
+    → &lt;input class="form-control" type="text" <span style="color:red">name="task[name]"</span> id="task_name" /&gt;<br><br></li>
+
+  <li>&lt;%= f.text_area :shosai, class:"form-control" %&gt;<br>
+    → &lt;textarea class="form-control" <span style="color:red">name="task[shosai]"</span> id="task_shosai"&gt;<br><br></li>
+
+  <li>&lt;%= f.text_field :kigen_str, class:"form-control", style:"width:100px;" %&gt;<br>
+    → &lt;input class="form-control" style="width:100px;" type="text" <span style="color:red">name="task[kigen_str]"</span> id="task_kigen_str" /&gt;<br><br></li>
+</ul>
+
 <br>
 <h2 class="midashi01">動作確認</h2>
 
 <p>
   「rails s」でサーバーを起動して、「localhost:3000」にアクセスし一覧画面を開きます。
-  一覧画面から照会リンクを押下して、照会画面に遷移すればOKです。
+  タスクを登録リンクを押下して、登録画面に遷移、値を適当に入力し（エラーチェックはまだなので、日付はYYYYMMDD形式で入力して下さい）
+  登録ボタン押下で一覧画面へ戻り、登録内容が一覧のどこかに表示されていればOKです。
+  また、登録画面でブラウザの「ページのソースを表示」などで実際にどんなHTMLタグが出来上がったを確認してみて下さい。
 </p>
 
 <div class="box01">
@@ -144,7 +247,7 @@ class Task < ApplicationRecord
     <img src="https://www.images.program777.com/201711/20171101_1.jpg" style="width:100%">
   </a>
 </div>
-
+<br>
 <div class="box01">
   <a href="https://www.images.program777.com/201711/20171101_2.jpg" data-lightbox="20171011_2">
     <img src="https://www.images.program777.com/201711/20171101_2.jpg" style="width:100%">
