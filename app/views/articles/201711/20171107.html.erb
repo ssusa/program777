@@ -1,0 +1,366 @@
+<%= render "/articles/article_header" %>
+
+<p>
+  前回は登録画面の更新部分だけ実装しましたので、今回はエラーチェック処理と、
+  jquery ui Datepickerを使ってテキストをクリックしたときにカレンダーを表示します。
+</p>
+
+<p>
+  <strong>入力値のエラーチェックは普通、モデルにカラムごとに分けて書きます。</strong>
+  タスク管理アプリでは、入力項目は、タスク名称、タスク詳細、期限が入力値なので、
+  3カラムのエラーチェックを書きます。
+</p>
+
+<br>
+<h2 class="midashi01">①task.rb（モデル）</h2>
+<span class="prettyprint-filename">/app/models/task.rb</span>
+<pre class="prettyprint linenums">
+class Task < ApplicationRecord
+
+  #期限のアクセサー（画面入力用）
+  attr_accessor :kigen_str
+
+  #kanryo（文字列）の値がある場合、絞込みを行う
+  scope :by_kanryo, ->(kanryo){
+    if kanryo.present?
+      #bool型の変数
+      kanryo_bool = true
+      if kanryo == "true"
+        kanryo_bool = true
+      else
+        kanryo_bool = false
+      end
+      where('kanryo = ?', kanryo_bool)
+    end
+  }
+
+  #===登録画面の作成②で追加 ここから===
+  validate :check_name
+  validate :check_shosai
+  validate :check_kigen_str
+
+  private
+
+  #nameのバリデーション
+  def check_name
+    if !name.present?
+      errors.add("タスク","を入力してください")
+    elsif name.length > 20
+      errors.add("タスク","は20文字以内で入力してください")
+    end
+  end
+
+  #shosaiのバリデーション
+  def check_shosai
+    if shosai.present? && shosai.length > 100
+      errors.add("タスク詳細","は100文字以内で入力してください")
+    end
+  end
+
+  #kigen_strのバリデーション
+  def check_kigen_str
+    if kigen_str.present? && !is_yyyymmdd?(kigen_str)
+      errors.add("期限","のフォーマットが不正です")
+    end
+  end
+
+  #文字列がyyyyMMdd型であるか
+  def is_yyyymmdd?(yyyymmdd)
+    if !yyyymmdd.present?
+      return false
+    end
+    if yyyymmdd.length != 8
+      return false
+    end
+    if !(yyyymmdd =~ /^[0-9]+$/)
+      return false
+    end
+
+    result = true
+    begin
+      yyyy = yyyymmdd[0..3].to_i
+      mm = yyyymmdd[4..5].to_i
+      dd = yyyymmdd[6..7].to_i
+      Date.new(yyyy,mm,dd)
+    rescue
+      result = false
+    end
+    result
+  end
+  #===登録画面の作成②で追加 ここまで===
+
+end
+</pre>
+
+<p>
+  21行目〜23行目のvalidate…は、これはバリデーション用（入力チェック用）のメソッドということを定義しています。
+  <strong>バリデーションはTasksコントローラーのcreateアクションで@task.valid?の時に実行されます。</strong>
+</p>
+<p>
+  3つのvalidateの検証結果が全てOKだったとき(厳密には全てのバリデーションが終わって、errorsが空であるとき)に、valid?はtrueとなります。
+  C#をやったことがある人であれば、IsValidプロパティと同じです。
+  この3行はメソッド名のみ定義しており、それぞれのメソッドは27行目〜48行目に書かれています。
+</p>
+<p>
+  25行目のprivateは、ここから下の行はprivateメソッドということを意味しています。
+  privateメソッドはクラスの外からアクセスできないメソッドです。ここでは例が悪いので、説明を省略します。
+</p>
+<p>
+  27行目〜34行目はnameカラム（タスク名称）のバリデーションです。
+  必須項目なので、空の時点でエラー、また入力があった場合も20文字を超えた場合エラーとしています。
+  エラーはモデルのerrorsに格納します。
+</p>
+<p>
+  37行目〜41行目はshosai（タスク詳細）のバリデーションです。
+  任意入力なので、空でもエラーとせず、100文字を超えた場合のみエラーとしています。
+</p>
+<p>
+  43行目〜48行目はkigen_str（期限）のバリデーションです。
+  任意入力なので、空でもエラーとせず、YYYYMMDD型の形式チェックを行っています。
+</p>
+
+<h3 class="midashi02">バリデーションとは</h3>
+<p>
+  入力チェックのことです。単項目チェックとも言います。
+  書式のチェックや、桁数のチェックを行います。
+</p>
+
+<h3 class="midashi02">errorsとは</h3>
+<p>
+  モデルの中に最初から用意されているエラーメッセージ格納用のオブジェクトです。
+  モデル.valid?メソッドで、エラーチェックをした時にエラーがある場合、モデル.errorsにエラーメッセージを追加します。
+  そして画面描画でモデル.errorsに値があれば、それを表示するのが普通です。また、エラーがあるかないかの判定にも使います。
+</p>
+
+<br>
+<h2 class="midashi01">②application.html.erb</h2>
+<pre class="prettyprint linenums">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;タスク管理 サンプル (Ruby on Rails)&lt;/title&gt;
+  &lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+  &lt;meta charset="utf-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width,initial-scale=1"&gt;
+  &lt;%= csrf_meta_tags %&gt;
+  &lt;link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"&gt;
+  &lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"&gt;
+  &lt;link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"&gt;
+  &lt;%= stylesheet_link_tag    'application', media: 'all' %&gt;
+  &lt;script src="https://code.jquery.com/jquery-3.2.1.js"&gt;&lt;/script&gt;
+  &lt;script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"&gt;&lt;/script&gt;
+  &lt;%= javascript_include_tag 'application' %&gt;
+  &lt;style type="text/css"&gt;
+    .waku{
+      padding:20px;
+      margin-bottom:20px;
+      border-radius:4px;
+      border:2px solid #ddd;
+    }
+    @media (max-width: 768px) {
+      h1#title{
+        font-size:16pt;
+      }
+      a {
+        -webkit-tap-highlight-color: rgba(16, 16, 16, 0.3);
+      }
+      .pc-only{
+        display:none;
+      }
+      .grid-th-width1{
+        width:0%;
+      }
+      .grid-th-width2{
+        width:50%;
+      }
+      .grid-th-width3{
+        width:15%;
+      }
+      .grid-th-width4{
+        width:20%;
+      }
+      .grid-th-width5{
+        width:15%;
+      }
+      .henshu-cell a{
+        display:block;
+        text-align:center;
+      }
+    }
+    @media (min-width: 769px) {
+      h1#title{
+        font-size:24pt;
+      }
+      .grid-th-width1{
+        width:10%;
+      }
+      .grid-th-width2{
+        width:55%;
+      }
+      .grid-th-width3{
+        width:10%;
+      }
+      .grid-th-width4{
+        width:10%;
+      }
+      .grid-th-width5{
+        width:15%;
+      }
+      .henshu-cell a{
+        margin-right:10px;
+      }
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script&gt;
+  $(function() {
+    // 登録画面の作成②で追加 ここから
+    if ($("#task_kigen_str").length)
+    {
+      $("#task_kigen_str").datepicker();
+      $("#task_kigen_str").datepicker("option", "dateFormat", 'yymmdd');
+      &lt;% if @task.present? %&gt;
+      $("#task_kigen_str").val("&lt;%= @task.kigen_str %&gt;");
+      &lt;% end %&gt;
+    }
+    // 登録画面の作成②で追加 ここまで
+    if ($(".alert").length)
+    {
+      $(".alert").show();
+    }
+  });
+&lt;/script&gt;
+&lt;header id="header" style="background-color: #333;color:#fff"&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="row"&gt;
+      &lt;div class="col-xs-12"&gt;
+        &lt;h1 id="title"&gt;
+          タスク管理 サンプル (Ruby on Rails)
+        &lt;/h1&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/header&gt;
+&lt;main id="main"&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="row"&gt;
+      &lt;div class="col-xs-12"&gt;
+        &lt;!-- 登録画面の作成②で追加 ここから --&gt;
+        &lt;% if @task.present? && @task.errors.present? %&gt;
+            &lt;div class="alert alert-danger" style="margin-top:20px;border-width:3px;display:none"&gt;
+              &lt;ul&gt;
+                &lt;% @task.errors.full_messages.each do |msg| %&gt;
+                    &lt;li&gt;&lt;%= msg %&gt;&lt;/li&gt;
+                &lt;% end %&gt;
+              &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;% end %&gt;
+        &lt;!-- 登録画面の作成②で追加 ここから --&gt;
+        &lt;% if flash[:msg].present? %&gt;
+            &lt;div class="alert alert-info" style="margin-top:20px;border-width:3px;display:none"&gt;
+              &lt;ul&gt;
+                &lt;li&gt;&lt;%= flash[:msg] %&gt;&lt;/li&gt;
+              &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;% end %&gt;
+        &lt;%= yield %&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+&lt;footer id="footer"&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="row"&gt;
+      &lt;div class="col-xs-12"&gt;
+        &lt;div style="padding-top:10px;text-align: center;border-top: 1px #999999 solid;"&gt;
+          &lt;p&gt;フッター&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+  application.html.erbをコピー&ペーストしやすいように全部貼り付けてしまったので、長くなってしまいました。
+  今回追加したのは、81行目〜90行目と、112行目〜122行目だけです。
+</p>
+<p>
+  軽くjqueryのことも書いておくと、80行目からの<strong>「$(function() {…}」は初期表示時に1回だけ実行されるスクリプト</strong>です。
+  実行のタイミングは①HTMLの出力→②jqueryの初期表示時に1回だけ実行されるスクリプトの実行です。
+</p>
+<p>
+  82行目の「if ($("#task_kigen_str").length)」は画面にtask_kigen_strという項目があったら、
+  つまり、登録画面か編集画面だったらif文の中に入ります。application.html.erbは全ての画面で共通して使う部分ですので、
+  必要な画面のときだけ実行するということです。
+</p>
+<p>
+  84行目の$("#task_kigen_str").datepicker()はjquery uiのライブラリのfunctionを呼び出しています。
+  task_kigen_strにカレンダー機能を持たせています。
+</p>
+<p>
+  85行目はカレンダーから選択された時に、テキストボックスに表示する文字列のフォーマットを指定しています。
+</p>
+<p>
+  86行目〜88行目はrubyのコードが混じっています。@taskがあるときだけ、87行目をスクリプトとして出力します。
+  @taskがあるケースは登録画面のエラー時、編集画面の初期表示時、編集画面のエラー時の3つです。
+  このエラー時のケースが初心者は忘れがちなところなので、注意してください。
+</p>
+<p>
+  112行目から121行目は@task.errorsがあった場合に表示します。さきほどもモデルのところでも説明しましたが、
+  @task.errorsには入力チェックでエラーとなった場合だけエラーメッセージが入っていますので、
+  エラー時にエラーの内容を表示している処理です。
+</p>
+
+<br>
+<h2 class="midashi01">動作確認</h2>
+
+<p>
+  「rails s」でサーバーを起動して、「localhost:3000」にアクセス、タスクを登録リンクを押下して登録画面を開きます。
+  以下を確認して下さい。このような境界値のテストは最低限必要です。
+</p>
+<ul>
+  <li>
+    期限のテキストボックスをクリックし、カレンダーコントロールが表示されること
+  </li>
+  <li>
+    タスク名称を空のまま登録ボタン押下でエラーとなること
+  </li>
+  <li>
+    タスク名称に21文字入力して登録ボタン押下でエラーとなること
+  </li>
+  <li>
+    タスク名称に20文字入力して登録ボタン押下でエラーとならないこと
+  </li>
+  <li>
+    タスク詳細に101文字入力して登録ボタン押下でエラーとなること
+  </li>
+  <li>
+    タスク詳細に100文字入力して登録ボタン押下でエラーとならないこと
+  </li>
+  <li>
+    期限を手入力でYYYYMMDD型以外をセットし登録ボタン押下でエラーとなること
+  </li>
+  <li>
+    タスク名称、タスク詳細、期限に正しい値を入力後、登録が行われること
+  </li>
+</ul>
+
+カレンダー
+<div class="box01">
+  <a href="https://www.images.program777.com/201711/20171107_1.jpg" data-lightbox="20171017_1">
+    <img src="https://www.images.program777.com/201711/20171107_1.jpg" style="width:100%">
+  </a>
+</div>
+<br>
+エラー時
+<div class="box01">
+  <a href="https://www.images.program777.com/201711/20171107_2.jpg" data-lightbox="20171017_2">
+    <img src="https://www.images.program777.com/201711/20171107_2.jpg" style="width:100%">
+  </a>
+</div>
+
+<%= render "/articles/article_footer" %>
